@@ -1,0 +1,31 @@
+{
+  "name": "aurora-outpost",
+  "version": "0.1.0",
+  "private": true,
+  "description": "AURORA — puesto avanzado en Marte. Simulador educativo con datos reales de la NASA.",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "test": "vitest run",
+    "snapshots": "node scripts/fetch-snapshots.mjs"
+  },
+  "dependencies": {
+    "clsx": "^2.1.1",
+    "framer-motion": "^12.23.12",
+    "lucide-react": "^0.468.0",
+    "next": "^15.5.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "zustand": "^5.0.8"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.1.13",
+    "@types/node": "^22.10.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "tailwindcss": "^4.1.13",
+    "typescript": "^5.7.0",
+    "vitest": "^3.2.4"
+  }
+}

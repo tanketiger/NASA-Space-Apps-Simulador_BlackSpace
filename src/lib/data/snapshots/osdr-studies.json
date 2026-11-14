@@ -1,0 +1,216 @@
+{
+  "fetchedAt": "2026-11-14T23:47:17.498Z",
+  "source": "OSDR (osdr.nasa.gov/osdr/data/search)",
+  "studies": [
+    {
+      "accession": "mgp86525",
+      "title": "radiation-15",
+      "organism": "",
+      "description": "",
+      "tag": "radiation"
+    },
+    {
+      "accession": "mgp20322",
+      "title": "Metagenome profile of soil treated with different radiation intensity",
+      "organism": "",
+      "description": "",
+      "tag": "radiation"
+    },
+    {
+      "accession": "OSD-73",
+      "title": "Transcriptome Profiles in Normal Human Bronchial Epithelial Cells after Exposure to gamma-rays and different HZE particles",
+      "organism": "",
+      "description": "Distinct transcriptome profiles in response to low-LET and high-LET, and different radiation qualities of HZE particles. Total RNA obtained from HBEC3KT cells after 1, 4, 12 and 24 hours of radiation. Mock-irradiated samples at each time point and control samples before radiation (0 hour) were also ",
+      "tag": "radiation"
+    },
+    {
+      "accession": "OSD-489",
+      "title": "Rodent Research 1",
+      "organism": "",
+      "description": "Objective of this study was to further validate bone degradation in microgravity as site-specific and preferential to weight bearing bone. An objective of this study was to further understand the role of the mechanical environment in controlling the process of bone remodeling, namely local formation",
+      "tag": "radiation"
+    },
+    {
+      "accession": "OSD-158",
+      "title": "Exposure to ionizing radiation induced persistent gene expression changes in mouse mammary gland",
+      "organism": "",
+      "description": "Six to eight week old female C57BL/6J mice were exposed to 2 Gy of whole body  xce xb3 radiation and mammary glands were surgically removed 2-month after radiation. RNA was isolated and microarray hybridization performed for gene expression analysis. 5 samples were analyzed: 2 controls at 2 months 1",
+      "tag": "radiation"
+    },
+    {
+      "accession": "OSD-661",
+      "title": "Toward countering muscle and bone loss with spaceflight: GSK3 as a potential target (Lumbar Spine, HLS, DXA Scanning)",
+      "organism": "",
+      "description": "We examined the effects of ~30 days of spaceflight on glycogen synthase kinase 3 (GSK3) content and inhibitory serine phosphorylation in murine muscle and bone samples from four separate missions (BION-M1, Rodent Research RR1, RR9, and RR18). Spaceflight reduced GSK3b content across all missions, wh",
+      "tag": "bone loss"
+    },
+    {
+      "accession": "OSD-310",
+      "title": "Role of Marrow Adipocytes in Bone Loss during Simulated Spaceflight (NNX12AL24G)",
+      "organism": "",
+      "description": "There is often a reciprocal relationship between bone marrow adipocytes and osteoblasts, suggesting that marrow adipose tissue (MAT) antagonizes osteoblast differentiation. MAT is increased in rodents during spaceflight but a causal relationship between MAT and bone loss remains unclear. In the pres",
+      "tag": "bone loss"
+    },
+    {
+      "accession": "OSD-471",
+      "title": "Rodent spine deconditioning after 30 days of microgravity (ARC00XX57)",
+      "organism": "",
+      "description": "Intervertebral disc herniation rates are quadrupled in astronauts following spaceflight. While bending motions are main contributors to herniation, the effects of microgravity on the bending properties of spinal discs are unknown. Consequently, the goal of this study was to quantify the bending prop",
+      "tag": "bone loss"
+    },
+    {
+      "accession": "OSD-979",
+      "title": "Small changes in thermoregulation influence cancellous bone turnover balance in distal femur metaphysis in growing female mice.",
+      "organism": "",
+      "description": "Mice are typically housed at temperatures well below their thermoneutral zone. When individually housed at room temperature (~22 C) mice experience cold stress which results in cancellous bone loss and has the potential to alter the skeletal response to treatment. It is not clear if there is a thres",
+      "tag": "bone loss"
+    },
+    {
+      "accession": "OSD-980",
+      "title": "Cold stress during room temperature housing alters skeletal response to simulated microgravity (hindlimb unloading) in growing female C57BL6 mice.",
+      "organism": "",
+      "description": "Laboratory mice are typically housed at temperatures below the thermoneutral zone for the species, resulting in cold stress and premature cancellous bone loss. Furthermore, mice are more dependent upon non-shivering thermogenesis to maintain body temperature during spaceflight, suggesting that micro",
+      "tag": "bone loss"
+    },
+    {
+      "accession": "PXD011687",
+      "title": "Brown bear skeletal muscle 2D-DIGE-LC-MSMS",
+      "organism": "Ursus arctos arctos (European brown bear)",
+      "description": "Muscle atrophy is one of the main deleterious consequences of ageing and physical inactivity. Although basic knowledge regarding the underlying mechanisms of muscle atrophy is continuously growing, there are still no efficient therapeutic strategies for its prevention and treatment. Hibernating bear",
+      "tag": "muscle atrophy"
+    },
+    {
+      "accession": "PXD004908",
+      "title": "Brown bear skeletal muscle quantitative LC-MSMS",
+      "organism": "Ursus arctos (Brown bear) (Grizzly bear)",
+      "description": "Muscle atrophy is one of the main deleterious consequences of ageing and physical inactivity. Although basic knowledge regarding the underlying mechanisms of muscle atrophy is continuously growing, there are still no efficient therapeutic strategies for its prevention and treatment. Hibernating bear",
+      "tag": "muscle atrophy"
+    },
+    {
+      "accession": "GSE93838",
+      "title": "Expression profiling of soleus muscle under the effect of simulated spaceflight",
+      "organism": "Rattus norvegicus",
+      "description": "A distinct difference between spaceflight-induced muscle atrophy and other forms of atrophy is the additional effect of cosmic rays in outer space. To study spaceflight-induced muscle atrophy, we performed two ground-based models of microgravity in a low dose radiation environment and studied transc",
+      "tag": "muscle atrophy"
+    },
+    {
+      "accession": "GSE25908",
+      "title": "Distinct Protein Degradation Induced by Different Disuse Models of Skeletal Muscle Atrophy",
+      "organism": "Mus musculus",
+      "description": "Skeletal muscle atrophy is a consequence of many diseases, environmental insults, inactivity, age and injury.  Atrophy is characterized by active degradation and removal of contractile proteins and a reduction in fiber size.  Animal models have been extensively used to identify pathways leading to a",
+      "tag": "muscle atrophy"
+    },
+    {
+      "accession": "GSE77121",
+      "title": "Dietary Genistein Prevents Denervation-Induced Muscle Atrophy in Male Rodents via Effects on Estrogen Receptor-α.",
+      "organism": "Rattus norvegicus",
+      "description": "Genistein is one of the flabonoids which is included in high concentration in soy and has a high estrogenic activity. Beneficial effects of estrogen or hormone replacement therapy (HRT) on muscle mass or muscle atrophy have been demonstrated. We investigated the preventive effects and underlying mec",
+      "tag": "muscle atrophy"
+    },
+    {
+      "accession": "OSD-751",
+      "title": "Role of DJ1 protein in dopamine dysregulation of the brain in spaceflight condition",
+      "organism": "",
+      "description": "Space exploration exposes astronauts to stressors that alter the immune response, rendering them vulnerable to infections and diseases. In this study, we aimed to determine the levels of inflammasome activation in the brains of mice that were housed in the International Space Station (ISS) for 37 da",
+      "tag": "immune"
+    },
+    {
+      "accession": "PXD001344",
+      "title": "Inactivation of a NB-LRR plant immune-effector complex by post-translational modification",
+      "organism": "Arabidopsis thaliana (Mouse-ear cress), Pseudomonas syringae",
+      "description": "Modification of plant immune complexes by pathogen effectors can trigger strong immune responses mediated by the action of nucleotide binding-leucine rich repeat immune receptors. Although some strains of the pathogen Pseudomonas syringae harbor effectors that individually can trigger immunity, the ",
+      "tag": "immune"
+    },
+    {
+      "accession": "PXD005939",
+      "title": "The effect of entomopathogenic fungal culture filtrate on the immune response of the greater wax moth, Galleria mellonella.",
+      "organism": "Galleria mellonella",
+      "description": "Galleria mellonella is a well-established model species regularly employed in the study of the insect immune response at cellular and humoral levels to investigate fungal pathogenesis and biocontrol agents. A cellular and proteomic analysis of the effect of culture filtrate of three EPF species on t",
+      "tag": "immune"
+    },
+    {
+      "accession": "PXD008448",
+      "title": "Proteomic profiling of human decidual immune proteins during Toxoplasma gondii infection",
+      "organism": "Homo sapiens (Human)",
+      "description": "A Toxoplasma gondii infection during pregnancy can result in spontaneous abortion, preterm labor, or congenital fetal defects. The decidual immune system plays a critical role in regulating the immune micro-environment and in the induction of immune tolerance. To better understand the factors that m",
+      "tag": "immune"
+    },
+    {
+      "accession": "PXD012011",
+      "title": "Ctenopharyngodon idella iTRAQ",
+      "organism": "Ctenopharyngodon idella",
+      "description": "Understanding the Immune Mechanisms of Vibrio mimicus targeted epitopes gene vaccine by iTRAQ Technology",
+      "tag": "immune"
+    },
+    {
+      "accession": "mgp83988",
+      "title": "Sleep deprivation and microbiome",
+      "organism": "",
+      "description": "Sleep deprivation study",
+      "tag": "sleep"
+    },
+    {
+      "accession": "PXD004537",
+      "title": "Homer1a drives Homeostatic Scaling-down of Excitatory Synapses During Sleep",
+      "organism": "Mus musculus (Mouse)",
+      "description": "Homeostatic scaling is a global form of synaptic plasticity used by neurons to adjust overall synaptic weight and maintain neuronal firing rates while protecting information coding. While homeostatic scaling has been demonstrated in vitro, a clear physiological function of this plasticity type has n",
+      "tag": "sleep"
+    },
+    {
+      "accession": "PXD010697",
+      "title": "Sleep-wake cycles drive daily dynamics of synaptic phosphorylation",
+      "organism": "Mus musculus (Mouse)",
+      "description": "The circadian clock drives daily changes of physiology, including sleep-wake cycles, by regulating transcription, protein abundance and function. Circadian phosphorylation controls cellular processes in peripheral organs, but little is known about its role in brain function and synaptic activity. We",
+      "tag": "sleep"
+    },
+    {
+      "accession": "GSE18550",
+      "title": "Identification of Sleep Regulatory Genes in Flies Mutant for the Clock Gene cycle",
+      "organism": "Drosophila melanogaster",
+      "description": "Extended periods of waking result in physiological impairments in humans, rats, and flies. Sleep homeostasis, the increase in sleep observed following sleep loss, is believed to counter the negative effects of prolonged waking by restoring vital biological processes that are degraded during sleep de",
+      "tag": "sleep"
+    },
+    {
+      "accession": "GSE109112",
+      "title": "Multi-brain-region transcriptional organization linking sleep and affective functions",
+      "organism": "Mus musculus",
+      "description": "Sleep and affective behaviors are highly interrelated phenotypes, commonly altered in a variety of neuropsychiatric diseases, including major depressive disorder (MDD). To understand the transcriptomic organization underlying sleep and affective function, we studied a population of (C57BL/6J x 129S1",
+      "tag": "sleep"
+    },
+    {
+      "accession": "mgp21999",
+      "title": "wastewater treatment plant",
+      "organism": "",
+      "description": "",
+      "tag": "plant"
+    },
+    {
+      "accession": "mgp15454",
+      "title": "Pitcher plant shotgun metagenomics",
+      "organism": "",
+      "description": "This project explores the whole communities living within pitcher plant pools collected from Singapore, Malaysian Borneo and the USA.",
+      "tag": "plant"
+    },
+    {
+      "accession": "mgp4786",
+      "title": "Barley_Rhizomicrobiomics_test_E_PE",
+      "organism": "",
+      "description": "Pilot project investigating the structure and functions of the rhizosphere microbial communities of wild, landrace and modern barley (Hordeum vulgare) accessions.",
+      "tag": "plant"
+    },
+    {
+      "accession": "mgp87124",
+      "title": "Fungal activities associated with Dicranum scoparium",
+      "organism": "",
+      "description": "",
+      "tag": "plant"
+    },
+    {
+      "accession": "mgp572",
+      "title": "Kleptoplastic sea slug microbiome",
+      "organism": "",
+      "description": "",
+      "tag": "plant"
+    }
+  ]
+}

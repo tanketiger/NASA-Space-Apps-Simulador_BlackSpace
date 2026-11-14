@@ -1,0 +1,121 @@
+{
+    "id":  "vivo",
+    "title":  "Soles recientes (EN VIVO)",
+    "window":  "pendiente",
+    "fetchedAt":  null,
+    "source":  "pendiente",
+    "mode":  "live",
+    "placeholder":  true,
+    "days":  [
+                 {
+                     "sol":  1,
+                     "earthDate":  "0000-00-00",
+                     "risk":  0,
+                     "label":  "Sin datos",
+                     "solarFactor":  1,
+                     "doseFactor":  1,
+                     "dustDelta":  0.02,
+                     "source":  "live",
+                     "sourceLabel":  "Sin datos · ejecuta npm run snapshots"
+                 },
+                 {
+                     "sol":  2,
+                     "earthDate":  "0000-00-00",
+                     "risk":  0,
+                     "label":  "Sin datos",
+                     "solarFactor":  1,
+                     "doseFactor":  1,
+                     "dustDelta":  0.02,
+                     "source":  "live",
+                     "sourceLabel":  "Sin datos · ejecuta npm run snapshots"
+                 },
+                 {
+                     "sol":  3,
+                     "earthDate":  "0000-00-00",
+                     "risk":  0,
+                     "label":  "Sin datos",
+                     "solarFactor":  1,
+                     "doseFactor":  1,
+                     "dustDelta":  0.02,
+                     "source":  "live",
+                     "sourceLabel":  "Sin datos · ejecuta npm run snapshots"
+                 },
+                 {
+                     "sol":  4,
+                     "earthDate":  "0000-00-00",
+                     "risk":  0,
+                     "label":  "Sin datos",
+                     "solarFactor":  1,
+                     "doseFactor":  1,
+                     "dustDelta":  0.02,
+                     "source":  "live",
+                     "sourceLabel":  "Sin datos · ejecuta npm run snapshots"
+                 },
+                 {
+                     "sol":  5,
+                     "earthDate":  "0000-00-00",
+                     "risk":  0,
+                     "label":  "Sin datos",
+                     "solarFactor":  1,
+                     "doseFactor":  1,
+                     "dustDelta":  0.02,
+                     "source":  "live",
+                     "sourceLabel":  "Sin datos · ejecuta npm run snapshots"
+                 },
+                 {
+                     "sol":  6,
+                     "earthDate":  "0000-00-00",
+                     "risk":  0,
+                     "label":  "Sin datos",
+                     "solarFactor":  1,
+                     "doseFactor":  1,
+                     "dustDelta":  0.02,
+                     "source":  "live",
+                     "sourceLabel":  "Sin datos · ejecuta npm run snapshots"
+                 },
+                 {
+                     "sol":  7,
+                     "earthDate":  "0000-00-00",
+                     "risk":  0,
+                     "label":  "Sin datos",
+                     "solarFactor":  1,
+                     "doseFactor":  1,
+                     "dustDelta":  0.02,
+                     "source":  "live",
+                     "sourceLabel":  "Sin datos · ejecuta npm run snapshots"
+                 },
+                 {
+                     "sol":  8,
+                     "earthDate":  "0000-00-00",
+                     "risk":  0,
+                     "label":  "Sin datos",
+                     "solarFactor":  1,
+                     "doseFactor":  1,
+                     "dustDelta":  0.02,
+                     "source":  "live",
+                     "sourceLabel":  "Sin datos · ejecuta npm run snapshots"
+                 },
+                 {
+                     "sol":  9,
+                     "earthDate":  "0000-00-00",
+                     "risk":  0,
+                     "label":  "Sin datos",
+                     "solarFactor":  1,
+                     "doseFactor":  1,
+                     "dustDelta":  0.02,
+                     "source":  "live",
+                     "sourceLabel":  "Sin datos · ejecuta npm run snapshots"
+                 },
+                 {
+                     "sol":  10,
+                     "earthDate":  "0000-00-00",
+                     "risk":  0,
+                     "label":  "Sin datos",
+                     "solarFactor":  1,
+                     "doseFactor":  1,
+                     "dustDelta":  0.02,
+                     "source":  "live",
+                     "sourceLabel":  "Sin datos · ejecuta npm run snapshots"
+                 }
+             ]
+}
