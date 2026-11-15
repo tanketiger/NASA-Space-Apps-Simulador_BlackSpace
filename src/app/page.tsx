@@ -23,54 +23,56 @@ import {
 } from "@/lib/game/nasa";
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Aurora Outpost · turno de supervivencia en primera persona (60 s)
+// Aurora Outpost · first-person survival shift (60 s)
 //
-// El fondo es /images/cabina.jpg. Todas las capas se colocan en % DENTRO de un
-// "escenario" que conserva la proporción real de la imagen (2752x1536) y la
-// cubre a pantalla completa: así un `left: 27.3%` cae siempre sobre el mismo
-// punto dibujado, sin importar el tamaño de la ventana.
+// The background is /images/cabina.jpg. Every layer is positioned in % INSIDE a
+// "stage" that keeps the real image aspect ratio (2752x1536) and covers the
+// screen: that way `left: 27.3%` always lands on the same drawn point, no matter
+// the window size.
 //
-// Aviso de honestidad de datos (para el jurado):
-//   · REAL      → el evento CME (NASA DONKI) y los estudios (NASA OSDR), que
-//                 se muestran con su etiqueta de procedencia y enlace.
-//   · REFERENCIA→ la dosis de MSL-RAD (0.64 mSv/día) y el dato del Sol 1812.
-//   · JUEGO     → Sol, reloj, tormenta, llamarada, batería, oxígeno, polvo,
-//                 compuertas, luces, cámaras y el propio Michi Marciano.
+// Data honesty note (for judges):
+//   · REAL      → the CME event (NASA DONKI) and the studies (NASA OSDR), shown
+//                 with their provenance label and link.
+//   · REFERENCE → the MSL-RAD dose (0.64 mSv/sol) and the Sol 1812 fact.
+//   · GAME      → Sol, clock, storm, flare, battery, oxygen, dust, gates,
+//                 lights, cameras and Michi Marciano himself.
 // ─────────────────────────────────────────────────────────────────────────────
 
-const IMG_RATIO = 2752 / 1536; // proporción real de cabina.jpg (16:9)
-const SOL_SECONDS = 60; // 1 Sol = 60 s reales
-const HOUR_SECONDS = 10; // 1 hora del turno = 10 s reales
-const LIGHT_SECONDS = 3; // el haz de LUZ dura 3 s
-const CLEAN_BATTERY_COST = 8; // % de batería por limpiar paneles
-const CLEAN_DUST_AMOUNT = 25; // puntos porcentuales de polvo que se quitan
-const O2_LOW_THRESHOLD = 35; // aviso de aire bajo
+const IMG_RATIO = 2752 / 1536; // real aspect ratio of cabina.jpg (16:9)
+const SOL_SECONDS = 60; // 1 Sol = 60 real seconds
+const HOUR_SECONDS = 10; // 1 shift hour = 10 real seconds
+const LIGHT_SECONDS = 3; // the LIGHT beam lasts 3 s
+const CLEAN_BATTERY_COST = 8; // % battery per panel cleaning
+const CLEAN_DUST_AMOUNT = 25; // dust percentage points removed
+const DUST_VISIBLE_FROM = 12; // below this the panels read as fully clean
+const DUST_FULL_AT = 24; // dust above this renders the full dirty overlay
+const O2_LOW_THRESHOLD = 35; // low-air warning
 
 const HAZARD = "repeating-linear-gradient(45deg, #facc15 0 16px, #0b0f1a 16px 32px)";
 
 const CAMS = [
-  { id: 1, label: "CAM 01 · SUPERFICIE" },
-  { id: 2, label: "CAM 02 · PANELES SOLARES" },
-  { id: 3, label: "CAM 03 · CLIMA ESPACIAL Y DOSIS" },
-  { id: 4, label: "CAM 04 · INVERNADERO Y CIENCIA" },
+  { id: 1, label: "CAM 01 · SURFACE" },
+  { id: 2, label: "CAM 02 · SOLAR PANELS" },
+  { id: 3, label: "CAM 03 · SPACE WEATHER & DOSE" },
+  { id: 4, label: "CAM 04 · GREENHOUSE & SCIENCE" },
 ] as const;
 
-// Diálogos de Michi Marciano. Cada frase lleva su etiqueta de procedencia.
+// Michi Marciano's lines. Every sentence carries its provenance tag.
 const MICHI = {
   intro:
-    "¡Miau espacial! Sobrevive hasta las 06:00 AM. Tu energía es finita: revisa las cámaras y usa el ESCUDO solo cuando venga peligro. (Dato de referencia · NASA)",
+    "Space meow! Survive until 06:00 AM. Your power is limited: check the cameras and raise the SHIELD only when danger comes. (Reference data · NASA)",
   lightCalm:
-    "¡La luz corta la noche marciana! La atmósfera de Marte tiene apenas ~1% de la densidad terrestre, por eso el cielo y el polvo se comportan tan distinto. (Dato de referencia · NASA)",
+    "Light cuts through the Martian night! Mars' atmosphere is only about 1% as dense as Earth's, which is why the sky and the dust behave so differently. (Reference data · NASA)",
   lightStorm:
-    "¡Mira ese polvo en el haz de luz! Las tormentas globales pueden bloquear hasta el 85% de la luz solar en los paneles, como la tormenta de 2018 que apagó al rover Opportunity. ¡Sube el ESCUDO! (Dato real histórico · NASA Opportunity)",
+    "Look at that dust in the light beam! Global storms can block up to 85% of sunlight from the panels, like the 2018 storm that shut down the Opportunity rover. Raise the SHIELD! (Real historical data · NASA Opportunity)",
   lightFlare:
-    "¡Alerta de radiación! Este registro sí ocurrió en NASA DONKI. Una eyección de masa coronal puede multiplicar la dosis superficial (0.64 mSv/día). ¡Cierra la compuerta! (Registro histórico · NASA DONKI)",
+    "Radiation alert! This record really happened in NASA DONKI. A coronal mass ejection can multiply the surface dose (0.64 mSv/sol). Close the gate! (Historical record · NASA DONKI)",
   lowOxygen:
-    "¡Aire bajo! Revisa CAM 04 o pulsa el switch verde de OXÍGENO antes de quedarte sin reservas. (Modelo del juego · no es dato NASA)",
+    "Low air! Check CAM 04 or press the green OXYGEN switch before your reserves run out. (Game model · not NASA data)",
   panelsCleaned:
-    "¡Paneles limpios! Antes de la limpieza del Sol 1812, solo el 25% de la luz solar atravesaba el polvo del rover Spirit; limpiarlo subió la transmitancia al 28%. (Dato de referencia · NASA PIA11799)",
+    "Panels clean! Before the Sol 1812 cleaning, only 25% of sunlight passed through the dust on the Spirit rover; cleaning raised transmittance to 28%. (Reference data · NASA PIA11799)",
   lowBattery:
-    "Batería insuficiente: necesitas al menos 8% de batería para limpiar los paneles. (Modelo del juego · no es dato NASA)",
+    "Not enough battery: you need at least 8% battery to clean the panels. (Game model · not NASA data)",
 };
 
 type Phase = "playing" | "won" | "lost";
@@ -78,17 +80,17 @@ type LossReason = "battery" | "oxygen" | "integrity" | null;
 
 interface GameState {
   phase: Phase;
-  elapsed: number; // 0..60 segundos del Sol
+  elapsed: number; // 0..60 seconds of the Sol
   battery: number; // 0..100
   oxygen: number; // 0..100
   integrity: number; // 0..100
-  panelDust: number; // 0..100 polvo de los paneles solares
-  shield: boolean; // compuerta central blindada bajada
-  lightUntil: number; // elapsed hasta el que la luz exterior está encendida
-  camsOpen: boolean; // tablet CCTV abierta
-  panelsCleaned: boolean; // logro: limpió los paneles
-  booped: boolean; // logro: hizo boop al rover
-  pumped: boolean; // logro: usó la bomba de O2
+  panelDust: number; // 0..100 dust on the solar panels
+  shield: boolean; // armored central gate lowered
+  lightUntil: number; // elapsed until which the outside light is on
+  camsOpen: boolean; // CCTV tablet open
+  panelsCleaned: boolean; // achievement: cleaned the panels
+  booped: boolean; // achievement: booped the rover
+  pumped: boolean; // achievement: used the O2 pump
   lossReason: LossReason;
 }
 
@@ -117,7 +119,7 @@ function clockLabel(elapsed: number) {
   return hour <= 0 ? "12:00 AM" : `0${hour}:00 AM`;
 }
 
-/** Un paso de simulación (1 segundo real). */
+/** One simulation step (1 real second). */
 function tick(s: GameState, rules: SolRules): GameState {
   if (s.phase !== "playing") return s;
 
@@ -131,26 +133,26 @@ function tick(s: GameState, rules: SolRules): GameState {
 
   const lightOn = t < next.lightUntil;
 
-  // Batería: -0.4 %/s con la base apagada, hasta -1.2 %/s con 3 sistemas activos
-  // (escudo + luz + cámaras). El polvo de los paneles añade un extra pequeño.
+  // Battery: -0.4 %/s with the base off, up to -1.2 %/s with 3 systems active
+  // (shield + light + cameras). Panel dust adds a small extra.
   const activeSystems = (next.shield ? 1 : 0) + (lightOn ? 1 : 0) + (next.camsOpen ? 1 : 0);
   const systemsDrain = 0.4 + 0.8 * (activeSystems / 3);
   const dustDrain = (next.panelDust / 100) * 0.5;
   next.battery = clamp(next.battery - (systemsDrain + dustDrain));
 
-  // Oxígeno: -1 %/s constante.
+  // Oxygen: a steady -1 %/s.
   next.oxygen = clamp(next.oxygen - 1);
 
-  // El polvo se acumula en los paneles solares (se limpia con el botón de paneles).
+  // Dust builds up on the solar panels (cleared with the panel button).
   next.panelDust = clamp(next.panelDust + 0.6);
 
-  // Integridad: golpes de eventos ambientales; el escudo los bloquea.
+  // Integrity: hits from environmental events; the shield blocks them.
   const inStorm = t >= stormStart && t <= stormEnd;
   const inFlare = t >= flareStart && t <= flareEnd;
   if ((inStorm || inFlare) && !next.shield) next.integrity = clamp(next.integrity - 3);
   if ((t === stormStart || t === flareStart) && !next.shield) next.integrity = clamp(next.integrity - 10);
 
-  // Derrotas.
+  // Losses.
   if (next.battery <= 0) {
     next.phase = "lost";
     next.lossReason = "battery";
@@ -185,7 +187,7 @@ export default function Page() {
   const [michiOpen, setMichiOpen] = useState(true);
   const [michiVoice, setMichiVoice] = useState(false);
 
-  // Datos reales de la NASA (con respaldo local inmediato).
+  // Real NASA data (with an immediate local fallback).
   const [nasa, setNasa] = useState<NasaFeed>(() => localFeed());
 
   const sound = useRef<GameSound | null>(null);
@@ -199,22 +201,24 @@ export default function Page() {
     if (sound.current) sound.current.enabled = soundOn;
   }, [soundOn]);
 
-  // Michi dice algo y (si está activada) lo lee en voz alta en español.
+  // Michi says something and (if enabled) reads it out loud in English.
   const say = useCallback((msg: string) => {
     setMichi(msg);
     if (voiceRef.current && typeof window !== "undefined" && "speechSynthesis" in window) {
       try {
         const u = new SpeechSynthesisUtterance(msg);
-        u.lang = "es-ES";
+        u.lang = "en-US";
+        const en = window.speechSynthesis.getVoices().find((v) => v.lang.toLowerCase().startsWith("en"));
+        if (en) u.voice = en;
         window.speechSynthesis.cancel();
         window.speechSynthesis.speak(u);
       } catch {
-        /* voz no disponible */
+        /* voice not available */
       }
     }
   }, []);
 
-  // Feed real de NASA (DONKI + OSDR). Si falla, se queda el respaldo local.
+  // Real NASA feed (DONKI + OSDR). If it fails, the local fallback stays.
   useEffect(() => {
     let alive = true;
     fetch("/api/nasa")
@@ -223,7 +227,7 @@ export default function Page() {
         if (alive && d?.cme && d?.osdr) setNasa(d);
       })
       .catch(() => {
-        /* sin red: seguimos con el respaldo local */
+        /* offline: we keep the local fallback */
       });
     return () => {
       alive = false;
@@ -241,24 +245,24 @@ export default function Page() {
   const inStorm = s.elapsed >= stormStart && s.elapsed <= stormEnd;
   const inFlare = s.elapsed >= flareStart && s.elapsed <= flareEnd;
 
-  // Peligro activo (sirena) y peligro inminente (alerta del CRT, con 3 s de aviso).
+  // Active danger (siren) and incoming danger (CRT alert, with a 3 s warning).
   const danger = s.phase === "playing" && (inStorm || inFlare);
   const alert =
     s.phase === "playing" &&
     ((s.elapsed >= stormStart - 3 && s.elapsed <= stormEnd) ||
       (s.elapsed >= flareStart - 3 && s.elapsed <= flareEnd));
 
-  // La cabina vibra si hay tormenta y la compuerta del ESCUDO está abierta.
+  // The cabin shakes if there is a storm and the SHIELD gate is open.
   const shaking = inStorm && !s.shield && s.phase === "playing";
 
-  // Reloj: 1 tick de motor por segundo real, solo mientras se juega.
+  // Clock: one engine tick per real second, only while playing.
   useEffect(() => {
     if (s.phase !== "playing") return;
     const id = window.setInterval(() => setState((p) => tick(p, rules)), 1000);
     return () => window.clearInterval(id);
   }, [s.phase, rules]);
 
-  // Sonidos y logros que dispara el propio motor.
+  // Sounds and achievements triggered by the engine itself.
   useEffect(() => {
     const p = prev.current;
     const c = state;
@@ -272,13 +276,13 @@ export default function Page() {
     prev.current = state;
   }, [state, stormStart, flareStart]);
 
-  // Al empezar cada Sol, Michi da la bienvenida.
+  // At the start of each Sol, Michi welcomes the player.
   useEffect(() => {
     setMichi(MICHI.intro);
     o2Warned.current = false;
   }, [solIndex]);
 
-  // Aviso de oxígeno bajo (una vez por bajada).
+  // Low-oxygen warning (once per dip).
   useEffect(() => {
     if (s.phase !== "playing") return;
     if (s.oxygen < O2_LOW_THRESHOLD && !o2Warned.current) {
@@ -289,7 +293,7 @@ export default function Page() {
     }
   }, [s.oxygen, s.phase, say]);
 
-  // ── Acciones de los switches ────────────────────────────────────────────────
+  // ── Switch actions ──────────────────────────────────────────────────────────
   function toggleShield() {
     if (s.phase !== "playing") return;
     sound.current?.gateClunk();
@@ -305,7 +309,7 @@ export default function Page() {
     window.setTimeout(() => setLightPressed(false), 450);
     setState((p) => ({ ...p, lightUntil: p.elapsed + LIGHT_SECONDS }));
 
-    // Michi actualiza su diagnóstico según el peligro activo en ese momento.
+    // Michi updates her diagnosis based on the danger active right now.
     if (inStorm) say(MICHI.lightStorm);
     else if (inFlare) say(MICHI.lightFlare);
     else say(MICHI.lightCalm);
@@ -325,7 +329,7 @@ export default function Page() {
     setState((p) => ({ ...p, oxygen: clamp(p.oxygen + 25), battery: clamp(p.battery - 10), pumped: true }));
   }
 
-  /** Limpieza mecánica instantánea de los paneles (aire comprimido). */
+  /** Instant mechanical panel cleaning (compressed air). */
   function cleanPanels() {
     if (s.phase !== "playing") return;
     if (s.battery < CLEAN_BATTERY_COST) {
@@ -363,7 +367,7 @@ export default function Page() {
     setCam(1);
   }
 
-  // ── Datos reales para la UI ─────────────────────────────────────────────────
+  // ── Real data for the UI ────────────────────────────────────────────────────
   const cmeEvent: CmeEvent = useMemo(() => {
     if (nasa.cme.isLive && nasa.cme.events.length > 0) return nasa.cme.events[0];
     return {
@@ -377,14 +381,19 @@ export default function Page() {
   const cmeLabel = nasa.cme.isLive ? nasa.cme.sourceLabel : CME_SOURCE_HISTORICAL;
   const study = studyForSol(sol.sol, nasa.osdr.studies);
   const transmittance = solarTransmittance(s.panelDust);
+  // Panels read as CLEAN while the dust is below DUST_VISIBLE_FROM, then get
+  // progressively dirtier up to DUST_FULL_AT. Since a cleaning always removes
+  // 25 points (and the shift never accumulates more than ~36), cleaning always
+  // drops the panels back into the clean range.
+  const dustLevel = clamp((s.panelDust - DUST_VISIBLE_FROM) / DUST_FULL_AT, 0, 1);
   const dosePerSol = BASE_DOSE_MSV_PER_SOL * (inFlare ? CME_DOSE_MULTIPLIER : 1);
   const careerDose = Math.round(BASE_DOSE_MSV_PER_SOL * CAREER_SOLS);
 
   const achievements = [
-    s.panelsCleaned && "🧹 Paneles limpios",
-    s.pumped && "💨 Recarga de oxígeno",
-    s.booped && "🤖 Boop al rover",
-    s.integrity >= 99 && "🛡️ Escudo perfecto",
+    s.panelsCleaned && "🧹 Panels cleaned",
+    s.pumped && "💨 Oxygen refill",
+    s.booped && "🤖 Rover boop",
+    s.integrity >= 99 && "🛡️ Perfect shield",
   ].filter(Boolean) as string[];
 
   return (
@@ -392,7 +401,7 @@ export default function Page() {
       className="relative w-full h-full overflow-hidden bg-black select-none"
       style={{ width: "100vw", height: "100vh" }}
     >
-      {/* Escenario con la proporción real de cabina.jpg, escalado para cubrir */}
+      {/* Stage with the real cabina.jpg aspect ratio, scaled to cover */}
       <div
         className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
         style={{
@@ -404,18 +413,18 @@ export default function Page() {
         <div className={`relative h-full w-full ${shaking ? "cabin-shake" : ""}`}>
           <img
             src="/images/cabina.jpg"
-            alt="Cabina del puesto avanzado Aurora en Marte"
+            alt="Aurora outpost cabin on Mars"
             className="absolute inset-0 h-full w-full object-cover pointer-events-none"
             draggable={false}
           />
 
-          {/* ═══ VENTANAL CENTRAL "MARTE" ═══ */}
+          {/* ═══ CENTRAL "MARS" WINDOW ═══ */}
           <div
             className="absolute overflow-hidden"
             style={{ left: "39.4%", top: "18.6%", width: "31.1%", height: "28.9%" }}
-            title="Ventanal MARTE"
+            title="MARS window"
           >
-            {/* Tormenta de polvo: oscurece el paisaje y arrastra polvo naranja */}
+            {/* Dust storm: darkens the landscape and drags orange dust */}
             {inStorm && (
               <>
                 <div aria-hidden="true" className="absolute inset-0 bg-black/50" />
@@ -456,10 +465,10 @@ export default function Page() {
               </>
             )}
 
-            {/* Destello breve al encender la luz */}
+            {/* Brief flash when the light turns on */}
             {flash && <div className="absolute inset-0 bg-yellow-100/80" />}
 
-            {/* Haz de luz del switch LUZ: revela el polvo en suspensión */}
+            {/* LIGHT switch beam: reveals the dust in suspension */}
             {lightOn && (
               <div
                 aria-hidden="true"
@@ -471,7 +480,7 @@ export default function Page() {
               />
             )}
 
-            {/* Compuerta metálica blindada: baja cuando el escudo está activo */}
+            {/* Armored metal gate: lowers when the shield is active */}
             <div
               className={`absolute inset-0 flex flex-col transition-transform duration-200 ease-out ${
                 s.shield ? "translate-y-0" : "-translate-y-full"
@@ -479,7 +488,7 @@ export default function Page() {
             >
               <div className="h-[15%]" style={{ backgroundImage: HAZARD }} />
               <div className="relative grid flex-1 place-items-center border-y-4 border-slate-950 bg-gradient-to-b from-[#8d969d] via-[#6d767d] to-[#4a535a] shadow-[inset_0_0_28px_rgba(0,0,0,0.55),inset_0_6px_10px_rgba(255,255,255,0.12)]">
-                <span className="text-[10px] font-black tracking-[0.35em] text-slate-900/55">ESCUDO</span>
+                <span className="text-[10px] font-black tracking-[0.35em] text-slate-900/55">SHIELD</span>
                 {[
                   { left: "3%", top: "12%" },
                   { right: "3%", top: "12%" },
@@ -498,27 +507,27 @@ export default function Page() {
             </div>
           </div>
 
-          {/* ═══ BARRAS DE VIDA · cada una dentro de su ranura dibujada ═══ */}
+          {/* ═══ LIFE BARS · each inside its drawn slot ═══ */}
           <StatBar
-            label="Batería"
+            label="Battery"
             value={s.battery}
             className="bg-green-500"
             style={{ left: "27.3%", top: "17.4%", width: "7.6%", height: "5.1%" }}
           />
           <StatBar
-            label="Oxígeno"
+            label="Oxygen"
             value={s.oxygen}
             className="bg-orange-500"
             style={{ left: "27.3%", top: "26.5%", width: "7.6%", height: "5.5%" }}
           />
           <StatBar
-            label="Integridad"
+            label="Integrity"
             value={s.integrity}
             className="bg-cyan-500"
             style={{ left: "27.3%", top: "35.5%", width: "7.6%", height: "5.1%" }}
           />
 
-          {/* ═══ CRT DERECHO · pantalla encendida sobre el cristal dibujado ═══ */}
+          {/* ═══ RIGHT CRT · screen lit over the drawn glass ═══ */}
           <div
             className="absolute overflow-hidden rounded-[7%]"
             style={{
@@ -530,7 +539,7 @@ export default function Page() {
                 "radial-gradient(ellipse at 50% 45%, rgba(9,30,19,0.985) 0%, rgba(2,8,5,0.985) 78%)",
               boxShadow: "inset 0 0 20px rgba(0,0,0,0.9), inset 0 0 44px rgba(34,197,94,0.08)",
             }}
-            title="Monitor CRT de telemetría"
+            title="CRT telemetry monitor"
           >
             <div
               aria-hidden="true"
@@ -556,12 +565,12 @@ export default function Page() {
                   textShadow: alert ? "0 0 8px rgba(248,113,113,0.9)" : "0 0 7px rgba(74,222,128,0.85)",
                 }}
               >
-                {alert ? "¡ALERTA!" : "SISTEMAS OK"}
+                {alert ? "ALERT!" : "SYSTEMS OK"}
               </div>
             </div>
           </div>
 
-          {/* Sirena: brillo rojo parpadeante cuando hay peligro activo */}
+          {/* Siren: pulsing red glow when there is active danger */}
           <div
             aria-hidden="true"
             className={`absolute rounded-full ${danger ? "animate-pulse" : ""}`}
@@ -578,18 +587,18 @@ export default function Page() {
             }}
           />
 
-          {/* ═══ SWITCH ESCUDO (naranja) ═══ */}
+          {/* ═══ SHIELD SWITCH (orange) ═══ */}
           <SwitchZone
-            label="Escudo"
+            label="Shield"
             accent="#f97316"
             on={s.shield}
             style={{ left: "20%", top: "55.5%", width: "8%", height: "18.5%" }}
             onClick={toggleShield}
           />
 
-          {/* ═══ SWITCH LUZ (amarillo) ═══ */}
+          {/* ═══ LIGHT SWITCH (yellow) ═══ */}
           <SwitchZone
-            label="Luz"
+            label="Light"
             accent="#facc15"
             on={lightOn}
             pressed={lightPressed}
@@ -597,36 +606,36 @@ export default function Page() {
             onClick={useLight}
           />
 
-          {/* ═══ SWITCH CÁMARAS (azul) ═══ */}
+          {/* ═══ CAMERAS SWITCH (blue) ═══ */}
           <SwitchZone
-            label="Cámaras"
+            label="Cameras"
             accent="#3b82f6"
             on={s.camsOpen}
             style={{ left: "77.3%", top: "54.2%", width: "7%", height: "16%" }}
             onClick={toggleCams}
           />
 
-          {/* ═══ SWITCH OXÍGENO (verde) ═══ */}
+          {/* ═══ OXYGEN SWITCH (green) ═══ */}
           <SwitchZone
-            label="Oxígeno"
+            label="Oxygen"
             accent="#22c55e"
             on={o2Pulse}
             style={{ left: "86.4%", top: "55.5%", width: "7.4%", height: "21%" }}
             onClick={pumpO2}
           />
 
-          {/* ═══ PUERTA IZQUIERDA · LIMPIAR PANELES (instantáneo) ═══ */}
+          {/* ═══ LEFT DOOR · CLEAN SOLAR PANELS (instant) ═══ */}
           <button
             type="button"
             onClick={cleanPanels}
             disabled={s.phase !== "playing"}
-            title="Limpiar paneles solares (-8% batería)"
-            aria-label="Salir a paneles solares"
+            title="Clean solar panels (-8% battery)"
+            aria-label="Go out to solar panels"
             className="group absolute cursor-pointer rounded-lg hover:bg-white/10 disabled:cursor-not-allowed"
             style={{ left: "1.5%", top: "5.5%", width: "20%", height: "44%" }}
           >
             <span className="pointer-events-none absolute inset-x-0 bottom-1 mx-auto w-[86%] rounded bg-black/75 px-1 py-0.5 text-center text-[9px] font-bold leading-tight text-cyan-200 opacity-0 transition-opacity group-hover:opacity-100">
-              LIMPIAR PANELES (-8% BATERÍA)
+              CLEAN PANELS (-8% BATTERY)
             </span>
           </button>
 
@@ -635,7 +644,7 @@ export default function Page() {
             type="button"
             onClick={boopRover}
             title="BOOP!"
-            aria-label="Boop al rover"
+            aria-label="Boop the rover"
             className={`group absolute cursor-pointer rounded-full hover:bg-white/10 ${bounce ? "animate-bounce" : ""}`}
             style={{ left: "48.5%", top: "56.5%", width: "11%", height: "18.5%" }}
           >
@@ -646,7 +655,7 @@ export default function Page() {
         </div>
       </div>
 
-      {/* ═══ MICHI MARCIANO · asistente guía (ficción) ═══ */}
+      {/* ═══ MICHI MARCIANO · guide assistant (fiction) ═══ */}
       <MichiGuide
         message={michi}
         open={michiOpen}
@@ -655,7 +664,7 @@ export default function Page() {
         onVoice={() => setMichiVoice((v) => !v)}
       />
 
-      {/* ═══ TABLET CCTV (switch CÁMARAS arriba) ═══ */}
+      {/* ═══ CCTV TABLET (CAMERAS switch above) ═══ */}
       {s.camsOpen && (
         <div
           className="absolute inset-0 z-40 flex flex-col items-center justify-center bg-black/90 p-4"
@@ -672,11 +681,11 @@ export default function Page() {
                 onClick={() => setState((p) => ({ ...p, camsOpen: false }))}
                 className="cursor-pointer rounded border border-yellow-400/40 px-2 py-1 text-yellow-200 hover:border-yellow-300"
               >
-                CERRAR ✕
+                CLOSE ✕
               </button>
             </div>
 
-            {/* Pestañas de cámara */}
+            {/* Camera tabs */}
             <div className="mb-2 grid grid-cols-2 gap-2 sm:grid-cols-4">
               {CAMS.map((c) => (
                 <button
@@ -698,13 +707,13 @@ export default function Page() {
             </div>
 
             <div className="relative aspect-video w-full overflow-hidden rounded border-2 border-slate-700 bg-black">
-              {/* ── CAM 01 · SUPERFICIE ── */}
+              {/* ── CAM 01 · SURFACE ── */}
               {cam === 1 && (
                 <>
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={MARS_TREK_TILE}
-                    alt="Imagen orbital real de Marte (NASA Mars Trek)"
+                    alt="Real orbital image of Mars (NASA Mars Trek)"
                     className="h-full w-full object-cover"
                     style={{ filter: inStorm ? "brightness(0.55) saturate(0.8)" : "saturate(1.05)" }}
                   />
@@ -713,45 +722,84 @@ export default function Page() {
                   )}
                   <Provenance text={SURFACE_SOURCE} />
                   <div className="absolute bottom-2 right-2 rounded bg-black/75 px-2 py-1 font-mono text-[10px] text-amber-200">
-                    {inStorm ? "TORMENTA DE POLVO ACTIVA" : "Sin tormenta · cielo despejado"}
+                    {inStorm ? "DUST STORM ACTIVE" : "No storm · clear sky"}
                   </div>
                 </>
               )}
 
-              {/* ── CAM 02 · PANELES SOLARES ── */}
+              {/* ── CAM 02 · SOLAR PANELS ── */}
               {cam === 2 && (
                 <>
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src="/images/exterior_paneles.png"
-                    alt="Paneles solares del puesto avanzado"
-                    className="h-full w-full object-cover"
-                  />
-                  <div
-                    className="pointer-events-none absolute inset-0"
+                    alt="Solar panels of the outpost"
+                    className="h-full w-full object-cover transition-[filter] duration-700 ease-out"
                     style={{
-                      opacity: s.panelDust / 100,
+                      // Clean panels are glossy and vivid. Dust dulls them, washes
+                      // out the colour and lifts the shadows, so dirty vs. clean is
+                      // obvious at a glance.
+                      filter:
+                        dustLevel > 0
+                          ? `brightness(${(1 + 0.55 * dustLevel).toFixed(3)}) saturate(${(
+                              1 - 0.85 * dustLevel
+                            ).toFixed(3)}) contrast(${(1 - 0.4 * dustLevel).toFixed(3)})`
+                          : "brightness(1.05) saturate(1.15) contrast(1.08)",
+                    }}
+                  />
+                  {/* Dust coating: invisible while the panels are clean, a thick tan layer when dirty */}
+                  <div
+                    aria-hidden="true"
+                    className="pointer-events-none absolute inset-0 transition-opacity duration-700 ease-out"
+                    style={{
+                      opacity: dustLevel,
                       background:
-                        "radial-gradient(circle at 50% 60%, rgba(180,120,60,0.85) 0%, rgba(120,80,40,0.6) 60%, rgba(80,50,25,0.4) 100%)",
+                        "linear-gradient(160deg, rgba(206,174,134,0.95) 0%, rgba(188,152,110,0.9) 55%, rgba(166,130,92,0.95) 100%)",
+                    }}
+                  />
+                  {/* Dust speckles so the coating reads as powder, not a flat tint */}
+                  <div
+                    aria-hidden="true"
+                    className="pointer-events-none absolute inset-0 transition-opacity duration-700 ease-out"
+                    style={{
+                      opacity: dustLevel * 0.9,
+                      backgroundImage:
+                        "radial-gradient(circle at 20% 30%, rgba(120,90,58,0.55) 0 1.5px, transparent 2.5px), radial-gradient(circle at 65% 55%, rgba(120,90,58,0.45) 0 2px, transparent 3px), radial-gradient(circle at 85% 20%, rgba(255,240,210,0.5) 0 1.5px, transparent 2.5px)",
+                      backgroundSize: "26px 22px, 34px 30px, 20px 18px",
+                      backgroundRepeat: "repeat",
+                    }}
+                  />
+                  {/* Clean sheen: a soft glossy highlight over the glass when the panels are clean */}
+                  <div
+                    aria-hidden="true"
+                    className="pointer-events-none absolute inset-0 transition-opacity duration-700 ease-out"
+                    style={{
+                      opacity: 1 - dustLevel,
+                      background:
+                        "linear-gradient(115deg, rgba(255,255,255,0.28) 0%, rgba(255,255,255,0.06) 26%, transparent 46%)",
                     }}
                   />
                   <Provenance text={PANELS_SOURCE} />
                   <div className="absolute bottom-2 left-2 rounded bg-black/75 px-2 py-1 font-mono text-[10px] text-amber-200">
-                    POLVO EN PANELES: {Math.round(s.panelDust)}%
+                    PANEL DUST: {Math.round(s.panelDust)}%
                     <br />
-                    TRANSMITANCIA SOLAR: {Math.round(transmittance)}%
+                    SOLAR TRANSMITTANCE: {Math.round(transmittance)}%
+                    <br />
+                    <span className={dustLevel <= 0 ? "text-lime-300" : "text-amber-400"}>
+                      {dustLevel <= 0 ? "STATUS: CLEAN ✓" : "STATUS: DUSTY"}
+                    </span>
                   </div>
                   <button
                     type="button"
                     onClick={cleanPanels}
                     className="absolute bottom-2 right-2 cursor-pointer rounded bg-amber-500 px-3 py-2 font-mono text-[11px] font-bold text-slate-900 hover:bg-amber-400"
                   >
-                    [LIMPIAR PANELES (-8% BATERÍA)]
+                    [CLEAN PANELS (-8% BATTERY)]
                   </button>
                 </>
               )}
 
-              {/* ── CAM 03 · CLIMA ESPACIAL Y DOSIS ── */}
+              {/* ── CAM 03 · SPACE WEATHER & DOSE ── */}
               {cam === 3 && (
                 <>
                   <div
@@ -763,43 +811,43 @@ export default function Page() {
                   />
                   <Provenance text={cmeLabel} />
                   <div className="absolute inset-0 flex flex-col justify-center gap-2 p-6 font-mono text-[12px] text-slate-100">
-                    <div className="text-[13px] font-bold text-orange-300">EYECCIÓN DE MASA CORONAL (CME)</div>
+                    <div className="text-[13px] font-bold text-orange-300">CORONAL MASS EJECTION (CME)</div>
                     <div>
                       ID: <span className="text-lime-300">{cmeEvent.activityID}</span>
                     </div>
                     <div>
-                      Inicio: <span className="text-lime-300">{cmeEvent.startTime}</span>
+                      Start: <span className="text-lime-300">{cmeEvent.startTime}</span>
                     </div>
                     <div>
-                      Velocidad medida:{" "}
+                      Measured speed:{" "}
                       <span className="text-lime-300">
-                        {cmeEvent.speedKmS !== null ? `${cmeEvent.speedKmS} km/s` : "no publicada"}
+                        {cmeEvent.speedKmS !== null ? `${cmeEvent.speedKmS} km/s` : "not published"}
                       </span>
                     </div>
                     <div className="mt-2 border-t border-slate-700 pt-2">
-                      Dosis de superficie:{" "}
+                      Surface dose:{" "}
                       <span className="text-cyan-300">{dosePerSol.toFixed(2)} mSv/sol</span>
-                      {inFlare && <span className="ml-2 text-red-400">×{CME_DOSE_MULTIPLIER} por CME activa</span>}
+                      {inFlare && <span className="ml-2 text-red-400">×{CME_DOSE_MULTIPLIER} during active CME</span>}
                     </div>
                     <div className="text-[10px] text-slate-400">{DOSE_SOURCE}</div>
                   </div>
                 </>
               )}
 
-              {/* ── CAM 04 · INVERNADERO Y CIENCIA ── */}
+              {/* ── CAM 04 · GREENHOUSE & SCIENCE ── */}
               {cam === 4 && (
                 <>
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src="/images/cam04.png"
-                    alt="Invernadero del puesto avanzado"
+                    alt="Greenhouse of the outpost"
                     className="h-full w-full object-cover"
                   />
                   <div className="absolute inset-0 bg-black/35" />
                   <Provenance text={OSDR_SOURCE} />
                   <div className="absolute inset-x-3 bottom-3 rounded-lg border border-lime-400/40 bg-black/80 p-3 font-mono text-[11px] text-slate-100">
                     <div className="flex items-center justify-between text-[10px] text-lime-300">
-                      <span>ESTUDIO DESBLOQUEADO · {study.accession}</span>
+                      <span>STUDY UNLOCKED · {study.accession}</span>
                       <span>O2 {Math.round(s.oxygen)}%</span>
                     </div>
                     <div className="mt-1 leading-snug">{study.title}</div>
@@ -815,7 +863,7 @@ export default function Page() {
                 </>
               )}
 
-              {/* Filtro CCTV común */}
+              {/* Common CCTV filter */}
               <div
                 className="pointer-events-none absolute inset-0"
                 style={{
@@ -829,26 +877,26 @@ export default function Page() {
             </div>
 
             <p className="mt-2 text-center font-mono text-[10px] text-slate-400">
-              Las etiquetas de procedencia indican si cada dato es real (NASA), de referencia o una regla del juego.
+              Provenance labels show whether each datum is real (NASA), reference data, or a game rule.
             </p>
           </div>
         </div>
       )}
 
-      {/* ═══ FIN DEL TURNO ═══ */}
+      {/* ═══ END OF SHIFT ═══ */}
       {s.phase !== "playing" && (
         <div className="absolute inset-0 z-50 grid place-items-center bg-black/80 p-4">
           <div className="w-full max-w-md rounded-2xl border-4 border-slate-900 bg-slate-800 p-6 text-center text-slate-100 shadow-2xl">
             {s.phase === "won" ? (
               <>
                 <div className="text-5xl">🎉</div>
-                <h1 className="mt-2 text-2xl font-black text-lime-400">¡SOL SUPERADO!</h1>
+                <h1 className="mt-2 text-2xl font-black text-lime-400">SOL COMPLETE!</h1>
                 <p className="mt-2 text-sm text-slate-300">
-                  {sol.label} completado a las 06:00 AM. Batería {Math.round(s.battery)}% · Oxígeno{" "}
-                  {Math.round(s.oxygen)}% · Integridad {Math.round(s.integrity)}%.
+                  {sol.label} completed at 06:00 AM. Battery {Math.round(s.battery)}% · Oxygen{" "}
+                  {Math.round(s.oxygen)}% · Integrity {Math.round(s.integrity)}%.
                 </p>
 
-                {/* Estudio real de OSDR desbloqueado en este turno */}
+                {/* Real OSDR study unlocked this shift */}
                 <div className="mt-3 rounded-lg border border-lime-400/40 bg-black/40 p-3 text-left">
                   <div className="font-mono text-[10px] text-lime-300">
                     {OSDR_SOURCE} · {study.accession}
@@ -856,10 +904,10 @@ export default function Page() {
                   <div className="mt-1 text-xs text-slate-200">{study.title}</div>
                 </div>
 
-                {/* Proyección didáctica de dosis */}
+                {/* Didactic dose projection */}
                 <div className="mt-3 rounded-lg border border-cyan-400/30 bg-black/40 p-3 text-left text-xs text-cyan-100">
-                  En {CAREER_SOLS} soles la tripulación acumularía ~{careerDose} mSv, frente al límite de
-                  carrera de {CAREER_LIMIT_MSV} mSv. (Dato de referencia · NASA · MSL-RAD)
+                  Over {CAREER_SOLS} sols the crew would accumulate ~{careerDose} mSv, against the{" "}
+                  {CAREER_LIMIT_MSV} mSv career limit. (Reference data · NASA · MSL-RAD)
                 </div>
 
                 {achievements.length > 0 && (
@@ -875,7 +923,7 @@ export default function Page() {
                     onClick={nextSol}
                     className="mt-5 cursor-pointer rounded-lg bg-lime-500 px-6 py-3 font-black text-slate-900 hover:bg-lime-400"
                   >
-                    CARGAR SIGUIENTE SOL ▶
+                    LOAD NEXT SOL ▶
                   </button>
                 ) : (
                   <button
@@ -883,7 +931,7 @@ export default function Page() {
                     onClick={retry}
                     className="mt-5 cursor-pointer rounded-lg bg-lime-500 px-6 py-3 font-black text-slate-900 hover:bg-lime-400"
                   >
-                    JUGAR DE NUEVO ↻
+                    PLAY AGAIN ↻
                   </button>
                 )}
               </>
@@ -892,20 +940,20 @@ export default function Page() {
                 <div className="text-5xl">
                   {s.lossReason === "battery" ? "🔋" : s.lossReason === "oxygen" ? "🫁" : "☄️"}
                 </div>
-                <h1 className="mt-2 text-2xl font-black text-red-400">¡SISTEMAS INHABILITADOS!</h1>
+                <h1 className="mt-2 text-2xl font-black text-red-400">SYSTEMS DOWN!</h1>
                 <p className="mt-2 text-sm text-slate-300">
                   {s.lossReason === "battery"
-                    ? "Se acabó la batería. Cada switch encendido gasta energía: úsalos solo cuando haga falta."
+                    ? "The battery ran out. Every switch you turn on drains power: use them only when you need them."
                     : s.lossReason === "oxygen"
-                    ? "Se acabó el oxígeno. Pulsa el switch OXÍGENO para recargar (+25%, cuesta 10% de batería)."
-                    : "La integridad llegó a 0%. Sube el switch ESCUDO cuando el CRT marque ¡ALERTA!."}
+                    ? "Oxygen ran out. Press the OXYGEN switch to refill (+25%, costs 10% battery)."
+                    : "Integrity hit 0%. Raise the SHIELD switch when the CRT shows ALERT!."}
                 </p>
                 <button
                   type="button"
                   onClick={retry}
                   className="mt-5 cursor-pointer rounded-lg bg-red-500 px-6 py-3 font-black text-white hover:bg-red-400"
                 >
-                  REINTENTAR {sol.label} ↻
+                  RETRY {sol.label} ↻
                 </button>
               </>
             )}
@@ -916,9 +964,9 @@ export default function Page() {
   );
 }
 
-// ── Subcomponentes ────────────────────────────────────────────────────────────
+// ── Subcomponents ─────────────────────────────────────────────────────────────
 
-/** Etiqueta de procedencia de un dato (real / referencia / juego). */
+/** Provenance tag for a datum (real / reference / game). */
 function Provenance({ text }: { text: string }) {
   return (
     <div className="absolute left-2 top-2 z-10 rounded bg-black/80 px-2 py-1 font-mono text-[10px] font-bold tracking-wide text-cyan-200">
@@ -927,7 +975,7 @@ function Provenance({ text }: { text: string }) {
   );
 }
 
-/** Tarjeta compacta de Michi Marciano, el asistente guía (ficción). */
+/** Compact Michi Marciano card, the guide assistant (fiction). */
 function MichiGuide({
   message,
   open,
@@ -953,21 +1001,21 @@ function MichiGuide({
         <div className="flex items-center gap-2">
           <img
             src="/images/michi_guia.png"
-            alt="Michi Marciano, guía del juego"
+            alt="Michi Marciano, the game guide"
             className="h-11 w-11 shrink-0 rounded-full border-2 border-emerald-400/70 object-cover"
             draggable={false}
           />
           <div className="min-w-0 flex-1">
             <div className="truncate text-[13px] font-bold text-emerald-300">Michi Marciano</div>
             <div className="text-[9px] font-bold tracking-[0.12em] text-amber-300">
-              FICCIÓN · GUÍA DEL JUEGO
+              FICTION · GAME GUIDE
             </div>
           </div>
           <button
             type="button"
             onClick={onVoice}
-            aria-label="Lectura por voz"
-            title="Lectura por voz (español)"
+            aria-label="Voice narration"
+            title="Voice narration (English)"
             className={`cursor-pointer rounded border px-1.5 py-0.5 text-[11px] ${
               voice
                 ? "border-emerald-400 text-emerald-300"
@@ -980,8 +1028,8 @@ function MichiGuide({
             type="button"
             onClick={onToggle}
             aria-expanded={open}
-            aria-label={open ? "Minimizar guía" : "Expandir guía"}
-            title={open ? "Minimizar" : "Expandir"}
+            aria-label={open ? "Minimize guide" : "Expand guide"}
+            title={open ? "Minimize" : "Expand"}
             className="cursor-pointer rounded border border-slate-600 px-1.5 py-0.5 text-[11px] text-slate-300 hover:border-emerald-400"
           >
             {open ? "–" : "?"}
@@ -998,7 +1046,7 @@ function MichiGuide({
   );
 }
 
-/** Barra de estado encajada en su ranura dibujada. Se vacía de izquierda a derecha. */
+/** Status bar fitted into its drawn slot. Empties from left to right. */
 function StatBar({
   label,
   value,
@@ -1039,7 +1087,7 @@ function StatBar({
   );
 }
 
-/** Área clicable transparente sobre un switch dibujado, con LED indicador. */
+/** Transparent clickable area over a drawn switch, with an indicator LED. */
 function SwitchZone({
   label,
   accent,
@@ -1065,7 +1113,7 @@ function SwitchZone({
       className="group absolute cursor-pointer rounded-lg hover:bg-white/10"
       style={style}
     >
-      {/* Halo suave sobre el switch dibujado cuando está encendido */}
+      {/* Soft halo over the drawn switch when it is on */}
       <span
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 rounded-lg transition-all duration-200"
@@ -1077,7 +1125,7 @@ function SwitchZone({
           transform: pressed ? "translateY(6%)" : "translateY(0)",
         }}
       />
-      {/* LED indicador: apagado / encendido. Baja un instante al pulsar. */}
+      {/* Indicator LED: off / on. Dips for an instant when pressed. */}
       <span
         aria-hidden="true"
         className="pointer-events-none absolute left-1/2 top-[9%] h-[6%] w-[11%] min-h-[6px] min-w-[6px] -translate-x-1/2 rounded-full transition-all duration-200"

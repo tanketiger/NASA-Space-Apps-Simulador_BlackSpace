@@ -1,35 +1,65 @@
-# Aurora Outpost: demo de turno en tiempo real
+# Aurora Outpost: real-time shift demo
 
-## Objetivo
+## Goal
 
-Juego web para niños de 7 a 12 años: desde una cabina en primera persona, vigilar cuatro cámaras y llegar a las 06:00 AM sin agotar batería ni oxígeno. Un turno dura 60 segundos reales (10 segundos = 1 hora del turno). Se puede pausar y repetir, y hay tres soles con dificultad creciente.
+Web game for kids aged 7 to 12: from a first-person cabin, watch four cameras and reach 06:00 AM
+without running out of battery or oxygen. A shift lasts 60 real seconds (10 seconds = 1 shift hour).
+You can retry, and there are three sols with increasing difficulty.
 
-## Demo implementada
+## Implemented demo
 
-- **Reloj del turno:** de 12:00 AM a 06:00 AM, un tick de motor por segundo real. Se gana al llegar a las 06:00 AM.
-- **Cámara 01 · Horizonte:** se ve la tormenta de polvo acercarse (fases lejos → acercándose → ventana).
-- **Cámara 02 · Paneles:** muestra el avance de la tormenta.
-- **Cámara 03 · Órbita:** nivel de la llamarada solar (0 a 3) y el registro histórico real de NASA DONKI del sol en curso.
-- **Cámara 04 · Invernadero:** oxígeno; manteniendo presionado el botón se bombea para recargarlo.
-- **Compuertas:** la izquierda bloquea la tormenta de polvo; la derecha bloquea la llamarada solar durante el destello.
-- **Luces:** mantén presionada una luz para ver qué hay detrás de la ventana correspondiente.
-- **Batería:** cada sistema activo (compuerta, luz, monitor) consume energía; si llega a 0 hay apagón y se pierde.
-- **Escritorio:** panel CRT con batería, uso y oxígeno, un ventilador decorativo y un mini-rover de juguete que rebota al tocarlo.
-- **Sonidos:** sintetizados con Web Audio API y opción para silenciarlos.
-- **Pantallas:** inicio con explicación, pausa, ayuda, victoria con confeti y derrota con un consejo según la causa.
+- **Shift clock:** from 12:00 AM to 06:00 AM, one engine tick per real second. You win at 06:00 AM.
+- **Central MARS window:** shows the storm; a dust overlay darkens the landscape and drifts orange
+  particles across it, and the cabin vibrates while the shield gate is open during the storm.
+- **SHIELD switch (orange):** lowers the armored gate over the window and blocks the storm and the
+  flare. Drains extra battery per second.
+- **LIGHT switch (yellow):** shines a beam over the window for 3 seconds and then lowers on its own;
+  every press updates Michi's diagnosis.
+- **CAMERAS switch (blue):** opens the CCTV tablet with four tabs:
+  - **CAM 01 · SURFACE** — real orbital tile from NASA Mars Trek, with a CCTV filter and the storm
+    state.
+  - **CAM 02 · SOLAR PANELS** — dust %, solar transmittance and the CLEAN PANELS button. The
+    panels look visibly dirty as dust builds up and visibly clean again right after a cleaning.
+  - **CAM 03 · SPACE WEATHER & DOSE** — real CME (live or archive) plus the surface dose.
+  - **CAM 04 · GREENHOUSE & SCIENCE** — oxygen and a real OSDR study card.
+- **OXYGEN switch (green):** rises for an instant (+25% oxygen, −10% battery).
+- **CLEAN PANELS:** instant mechanical cleaning with compressed air (−8% battery, −25 dust points),
+  available from the left door and from inside CAM 02.
+- **Battery:** every active system (shield, light, cameras) drains power; panel dust adds a small
+  extra. If it reaches 0 the shift is lost.
+- **CRT:** telemetry monitor with the Sol, the time and “SYSTEMS OK” / “ALERT!”.
+- **Michi Marciano:** the fictional guide card (bottom left), with five contextual lines, a
+  minimize/expand button and an optional read-aloud voice.
+- **Victory screen:** “SOL COMPLETE!” plus the OSDR study unlocked that shift and a didactic
+  projection of crew dose over 900 sols versus the 600 mSv career limit.
+- **Sounds:** synthesized with the Web Audio API, with a mute option.
 
-## Qué es real y qué no
+## What is real and what is not
 
-El único dato real que se muestra es el registro histórico de NASA DONKI de cada sol (CAM 03): son eyecciones de masa coronal realmente observadas (`2024-05-08T05:36:00-CME-001`, `2023-02-24T02:00:00-CME-001` y `2022-03-28T00:36:00-CME-001`). No son un aviso vigente ni demuestran que hayan alcanzado Marte; en el juego se usan solo como referencia.
+The real data shown comes from **two** live sources: the CME records from **NASA DONKI** (CAM 03) and
+the studies from **NASA OSDR** (CAM 04 and the victory screen). Both carry a provenance label and a
+link, and both fall back to a local copy when there is no internet.
 
-Todo el estado de la base, el consumo, los daños, las fases y los tiempos son reglas **ficticias**, no datos medidos ni un modelo validado. El turno no predice el clima ni la dosis de un astronauta. Las cámaras son ilustraciones SVG y composiciones CSS, no transmisiones reales. Las compuertas, las luces y el bombeo son mecanismos narrativos; su costo y eficacia no son valores de NASA. Los parámetros de dificultad de cada sol están en `src/data/mars_sols.json` y son decisiones de diseño.
+Reference data cited: the surface dose (0.64 mSv/sol, MSL-RAD), the Spirit rover dust case on Sol
+1812 (NASA PIA11799), the orbital tile from NASA Mars Trek and the 600 mSv career limit.
 
-El 25 % de Spirit se refiere a la luz que atravesaba el polvo, no a una recuperación universal de energía. Véase la fuente PIA11799 enlazada en créditos.
+Everything about the outpost state, the consumption, the damage, the phases and the timings are
+**fictional** rules, not measurements or a validated model. The shift does not predict the weather or
+an astronaut's dose. The cameras are illustrations and CSS compositions, not real transmissions. The
+gates, the lights and the oxygen pump are narrative mechanisms; their cost and effect are not NASA
+values. The difficulty parameters of each sol live in `src/data/mars_sols.json` and are design
+decisions.
 
-## Funcionamiento sin red
+The "25%" of Spirit refers to the light that got past the dust, not to a universal power recovery.
+See source PIA11799, linked in the credits.
 
-El juego no solicita claves ni consulta servicios remotos: todo está precargado en el propio código y en `src/data/mars_sols.json`. Ejecutado localmente, la partida no necesita internet. Para abrir por primera vez una versión alojada en internet se requiere conexión; no se ha configurado un service worker para uso fuera de línea tras visitar un sitio remoto. Los enlaces a las fuentes sí requieren conexión.
+## Offline behavior
 
-## Pendiente
+The game never asks the player for a key. It queries its own `/api/nasa` endpoint; if there is no
+internet or the quota runs out, it falls back automatically to local data and marks it as archive or
+historical. The links to the sources do require a connection.
 
-Selección y verificación de datos adicionales de RadLab, OSDR y clima marciano; más soles; pruebas con jugadores y adaptación educativa. Ninguna de estas funciones se presenta como implementada.
+## Pending
+
+Selection and verification of additional data (more OSDR studies, RadLab), more sols, playtests with
+kids and educational adaptation. None of these is presented as already implemented.

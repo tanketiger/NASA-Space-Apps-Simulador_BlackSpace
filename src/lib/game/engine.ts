@@ -1,10 +1,10 @@
 /**
- * Motor puro del turno de Aurora Outpost (estilo "guardia nocturna").
+ * Pure shift engine for Aurora Outpost (night-watch style).
  *
- * Importante para el jurado: solo `historicalEvent` (ver src/data/mars_sols.json)
- * es un dato real de la NASA. Todo lo que hay aquí abajo -tormenta de polvo,
- * nivel de la llamarada, consumo de batería, oxígeno- es una regla de diseño
- * de juego pensada para niños de 7 a 12 años, no una medición ni un pronóstico.
+ * Important for the jury: only `historicalEvent` (see src/data/mars_sols.json)
+ * is real NASA data. Everything below -dust storm, flare level, battery drain,
+ * oxygen- is a game design rule made for kids aged 7 to 12, not a measurement
+ * or a forecast.
  */
 
 export type Camera = 1 | 2 | 3 | 4;
@@ -81,12 +81,12 @@ export function activeSystems(s: GameState): number {
   return [s.gateLeft, s.gateRight, s.lightLeft, s.lightRight, s.monitorOpen].filter(Boolean).length;
 }
 
-/** 1 a 5, como las barras de uso de energía. */
+/** 1 to 5, like the power-usage bars. */
 export function usageBars(s: GameState): number {
   return Math.min(5, 1 + activeSystems(s));
 }
 
-/** 12:00 AM a 06:00 AM; 10 segundos reales = 1 hora del turno. */
+/** 12:00 AM to 06:00 AM; 10 real seconds = 1 shift hour. */
 export function clockLabel(elapsed: number): string {
   const hour = Math.min(6, Math.floor(elapsed / 10));
   if (hour === 0) return "12:00 AM";
@@ -101,11 +101,11 @@ export function tick(state: GameState, rules: SolRules): GameState {
   if (state.phase !== "playing" && state.phase !== "blackout") return state;
   const s = { ...state, elapsed: state.elapsed + 1 };
 
-  // --- Oxígeno (regla de diseño, no una medición real) ---
+  // --- Oxygen (design rule, not a real measurement) ---
   if (pumpingNow(s)) s.oxygen = Math.min(100, s.oxygen + (PUMP_RATE - rules.oxygenDrainPerSecond));
   else s.oxygen = Math.max(0, s.oxygen - rules.oxygenDrainPerSecond);
 
-  // --- Batería ---
+  // --- Battery ---
   if (s.phase === "playing") {
     const drain = rules.batteryIdleDrainPerSecond + SYSTEM_DRAIN * activeSystems(s);
     s.battery = Math.max(0, s.battery - drain);
@@ -124,7 +124,7 @@ export function tick(state: GameState, rules: SolRules): GameState {
     s.lossReason = "battery";
   }
 
-  // --- Tormenta de polvo (ruta izquierda) ---
+  // --- Dust storm (left route) ---
   if (s.dustPhase === "idle" && s.elapsed >= rules.dustStart) s.dustPhase = "far";
   else if (s.dustPhase === "far" && s.elapsed >= (rules.dustStart + rules.dustAtWindow) / 2) s.dustPhase = "approaching";
   else if (s.dustPhase === "approaching" && s.elapsed >= rules.dustAtWindow) {
@@ -142,7 +142,7 @@ export function tick(state: GameState, rules: SolRules): GameState {
     }
   }
 
-  // --- Llamarada solar (ruta derecha) ---
+  // --- Solar flare (right route) ---
   if (s.flareLevel === 0 && s.elapsed >= rules.flareLevel1) s.flareLevel = 1;
   if (s.flareLevel === 1 && s.elapsed >= rules.flareLevel2) s.flareLevel = 2;
   if (s.flareLevel === 2 && s.elapsed >= rules.flareCritical) {
@@ -160,13 +160,13 @@ export function tick(state: GameState, rules: SolRules): GameState {
     }
   }
 
-  // --- Oxígeno agotado ---
+  // --- Oxygen depleted ---
   if (s.oxygen <= 0 && (s.phase === "playing" || s.phase === "blackout")) {
     s.phase = "lost";
     s.lossReason = s.lossReason ?? "oxygen";
   }
 
-  // --- Victoria ---
+  // --- Victory ---
   if (s.phase === "playing" && s.elapsed >= TOTAL_SECONDS) s.phase = "won";
 
   return s;

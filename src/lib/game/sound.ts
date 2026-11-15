@@ -1,8 +1,8 @@
 "use client";
 
 /**
- * Sonidos sintetizados en tiempo real con Web Audio API.
- * No requiere archivos externos de audio; todo se genera con osciladores y ruido blanco.
+ * Sounds synthesized in real time with the Web Audio API.
+ * No external audio files are needed; everything is generated with oscillators and white noise.
  */
 export class GameSound {
   private ctx: AudioContext | null = null;
@@ -64,111 +64,111 @@ export class GameSound {
     src.start(t0);
   }
 
-  // Clic de botón físico
+  // Physical button click
   button() {
     this.tone(480, 260, 0.07, "square", 0.05);
   }
 
-  // Cambio de cámaras CCTV
+  // CCTV camera switch
   cameraSwitch() {
     this.noiseBurst(0.1, 0.05);
     this.tone(850, 420, 0.06, "sine", 0.04);
   }
 
-  // Compuerta blindada (golpe hidráulico)
+  // Armored gate (hydraulic thud)
   gateClunk() {
     this.tone(160, 45, 0.35, "sawtooth", 0.12);
     this.noiseBurst(0.18, 0.08, 0.05);
   }
 
-  // Interruptor de luz exterior
+  // Outdoor light switch
   lightClick() {
     this.tone(750, 800, 0.04, "square", 0.04);
   }
 
-  // Despresurización de esclusa EVA (salir a paneles)
+  // EVA airlock depressurization (going out to the panels)
   depressurize() {
     this.noiseBurst(0.6, 0.15);
     this.tone(300, 80, 0.5, "triangle", 0.08);
   }
 
-  // Presurización de esclusa (volver a cabina)
+  // Airlock pressurization (coming back into the cabin)
   pressurize() {
     this.noiseBurst(0.5, 0.12);
     this.tone(120, 440, 0.4, "sine", 0.08);
   }
 
-  // Soplador de aire comprimido para limpiar paneles
+  // Compressed-air blower for cleaning the panels
   airPuff() {
     this.noiseBurst(0.12, 0.09);
     this.tone(600, 200, 0.1, "sine", 0.03);
   }
 
-  // Limpiaparabrisas del ventanal
+  // Window wiper
   wiper() {
     this.tone(380, 520, 0.18, "sawtooth", 0.05);
     this.tone(520, 360, 0.18, "sawtooth", 0.05, 0.18);
   }
 
-  // Risa traviesa del marcianito
+  // Mischievous chuckle of the little Martian
   alienChuckle() {
     [0, 0.08, 0.16, 0.24].forEach((d, i) => {
       this.tone(900 + (i % 2) * 200, 1100 + (i % 2) * 200, 0.06, "triangle", 0.06, d);
     });
   }
 
-  // Marcianito asustado huyendo por la luz
+  // Frightened little Martian fleeing from the light
   alienScared() {
     this.tone(1200, 300, 0.35, "sawtooth", 0.09);
     this.noiseBurst(0.2, 0.06);
   }
 
-  // Juguete Mini-Rover
+  // Mini-Rover toy
   boop() {
     this.tone(520, 880, 0.12, "sine", 0.08);
   }
 
-  // Alarma general
+  // General alarm
   alarm() {
     this.tone(550, 550, 0.2, "triangle", 0.08);
     this.tone(550, 550, 0.2, "triangle", 0.08, 0.25);
   }
 
-  // Tormenta de polvo impactando
+  // Dust storm hitting
   dustHit() {
     this.noiseBurst(0.6, 0.16);
     this.tone(85, 35, 0.5, "sawtooth", 0.14);
   }
 
-  // Destello de llamarada solar
+  // Solar flare flash
   flareFlash() {
     this.tone(1100, 1900, 0.4, "sine", 0.1);
   }
 
-  // Golpe de llamarada solar
+  // Solar flare impact
   flareHit() {
     this.noiseBurst(0.5, 0.15);
     this.tone(700, 160, 0.45, "sawtooth", 0.12);
   }
 
-  // Apagón total
+  // Total blackout
   blackout() {
     this.tone(220, 35, 0.95, "sawtooth", 0.12);
   }
 
-  // Bomba de oxígeno
+  // Oxygen pump
   oxygenPump() {
     this.tone(280, 440, 0.12, "sine", 0.05);
   }
 
-  // Fanfarria de victoria (06:00 AM)
+  // Victory fanfare (06:00 AM)
   win() {
     [0, 0.12, 0.24, 0.38, 0.52].forEach((d, i) => {
       this.tone(440 + i * 110, 440 + i * 130, 0.22, "sine", 0.07, d);
     });
   }
 
-  // Derrota
+  // Defeat
   lose() {
     this.tone(280, 70, 0.7, "sawtooth", 0.09);
   }

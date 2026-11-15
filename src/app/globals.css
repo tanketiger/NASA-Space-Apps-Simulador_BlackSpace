@@ -20,9 +20,9 @@ body {
   -webkit-tap-highlight-color: transparent;
 }
 
-/* ── Efectos de la tormenta de polvo (reglas visuales del juego) ───────────── */
+/* ── Dust-storm effects (game visual rules) ────────────────────────────────── */
 
-/* Partículas de polvo arrastradas en horizontal por el viento marciano. */
+/* Dust particles dragged horizontally by the Martian wind. */
 @keyframes dust-drift {
   from {
     transform: translateX(-18%);
@@ -32,7 +32,7 @@ body {
   }
 }
 
-/* Ráfagas que cruzan el ventanal de un lado a otro. */
+/* Gusts crossing the window from side to side. */
 @keyframes dust-streak {
   0% {
     transform: translateX(-60%) scaleX(0.7);
@@ -47,7 +47,7 @@ body {
   }
 }
 
-/* Vibración sutil de la cabina con la compuerta abierta durante la tormenta. */
+/* Subtle cabin vibration with the gate open during the storm. */
 @keyframes cabin-shake {
   0%,
   100% {
@@ -75,7 +75,7 @@ body {
   animation: cabin-shake 0.28s linear infinite;
 }
 
-/* Haz de luz amarillo del switch LUZ sobre el ventanal. */
+/* Yellow LIGHT switch beam over the window. */
 @keyframes light-beam {
   0% {
     opacity: 0;

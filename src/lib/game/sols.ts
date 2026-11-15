@@ -6,7 +6,7 @@ export interface HistoricalEvent {
   activityID: string;
   date: string;
   link: string;
-  /** Velocidad medida del CME en km/s (campo real de NASA DONKI). */
+  /** Measured CME speed in km/s (real NASA DONKI field). */
   speedKmS?: number;
   note: string;
 }

@@ -1,89 +1,87 @@
-# Datos verificados y veredicto sobre el "25 %"
+# Verified data and the verdict on the "25%"
 
-> **AVISO DE REVISIÓN:** solo está verificada aquí la cita directa de Spirit de la sección 1.
-> Las fórmulas y cifras de la simulación anterior no están validadas para una base humana
-> y no se usan como datos reales en la nueva demo. Consulta `REDISENO.md`.
-
-> Este archivo existe para que el jurado (y el equipo) pueda auditar cada cifra del juego.
-> Toda cifra que aparezca en pantalla debe poder rastrearse hasta aquí.
+> This file exists so the jury (and the team) can audit every figure in the game.
+> Every figure shown on screen must be traceable back to here.
 
 ---
 
-## 1. El "25 % de recuperación de energía" — VEREDICTO
+## 1. The "25% power recovery" — VERDICT
 
-**La afirmación tal como está en el brief no es correcta.** El 25 % existe, pero significa
-otra cosa.
+**The claim as it appears in the brief is not correct.** The 25% exists, but it means something
+else.
 
-| Afirmación | Veredicto | Qué dice realmente la fuente |
+| Claim | Verdict | What the source actually says |
 |---|---|---|
-| "Los paneles recuperan un 25 % de energía" | ❌ **Falso** | No hay ningún dato NASA que diga eso. |
-| "El 25 % de la luz solar atravesaba el polvo" | ✅ **Correcto** | Antes de la limpieza del **sol 1812** del rover Spirit, **solo el 25 % de la luz** que llegaba al panel lograba pasar el polvo. Tras la limpieza subió al **28 %**. |
-| "Una limpieza puede subir la energía ~14 %" | ✅ **Correcto** | Ese mismo evento subió la producción de **210 Wh a 240 Wh** (+30 Wh, ≈ +14 %). |
-| "La eficiencia de las celdas era ~25 %" | ⚠️ **Cercano** | Las celdas de triple unión del MER tenían una eficiencia de conversión de ≈26 %. Es otra cosa distinta. |
+| "The panels recover 25% of power" | ❌ **False** | No NASA source says that. |
+| "25% of sunlight got past the dust" | ✅ **Correct** | Before the **Sol 1812** cleaning of the Spirit rover, **only 25% of the light** reaching the array got past the dust. After cleaning it rose to **28%**. |
+| "A cleaning can raise power ~14%" | ✅ **Correct** | That same event raised output from **210 Wh to 240 Wh** (+30 Wh, ≈ +14%). |
+| "The cell efficiency was ~25%" | ⚠️ **Close** | The MER triple-junction cells had a conversion efficiency of ≈26%. That is a different thing. |
 
-**Fuente primaria (NASA Photojournal PIA11799):**
+**Primary source (NASA Photojournal PIA11799):**
 > *"Before the Sol 1812 cleaning, only 25 percent of sunlight hitting the array was getting
 > past the dust to be used by the photovoltaic cells. That factor improved to 28 percent after
 > the cleaning event."*
 > — <https://science.nasa.gov/photojournal/spirit-solar-panel-on-sol-1813-still-very-dusty/>
 
-### Cómo lo implementamos en el juego
+### How it is implemented in the game
 
-Modelamos **transmitancia**, no "recuperación mágica":
+We model **transmittance**, not "magic recovery":
 
 ```
-generación_solar = 30 kWh × (1 − polvo × 0,85) × factor_tormenta
+solar_transmittance = 100% − dust
 ```
 
-- El polvo sube ≈ **0,2 % por sol** en calma (estimaciones publicadas para MER: 0,1–0,3 %/sol).
-- Limpiar a mano devuelve **25 puntos porcentuales** de transmitancia y cuesta **2 kWh**.
-- Un remolino de polvo (real) puede limpiar solo.
-- Una tormenta global puede llevar la generación a **×0,15**.
+- Dust builds up over the shift and reduces transmittance.
+- The **CLEAN PANELS** action (left door, or the button inside CAM 02) instantly removes **25
+  percentage points** of dust and costs **8% of the battery**.
+- CAM 02 shows both numbers on screen: **PANEL DUST** and **SOLAR TRANSMITTANCE**, plus a
+  **STATUS: CLEAN / DUSTY** readout. The panels themselves are rendered dirty as dust builds up
+  (a dull, dusty coating) and look clean and glossy again right after a cleaning, so the effect is
+  visible and not just a number.
 
-Así el jugador **siente** el dato real sin que le mientan con un porcentaje inventado.
+That way the player **feels** the real figure without being told an invented percentage.
 
 ---
 
-## 2. Cifras reales usadas por el motor
+## 2. Real figures used by the game
 
-| Dato | Valor | Fuente |
+| Datum | Value | Source |
 |---|---|---|
-| Potencia eléctrica del MMRTG | **≈100 W continuos** | NASA, *Mars Rover Power* — <https://science.nasa.gov/resource/mars-rover-power/> |
-| Producción del array solar del MER al inicio | **≈800–900 Wh/sol** | NASA/JPL vía PDS Geosciences Node |
-| Producción tras 90 soles (polvo + estación) | **≈600 Wh/sol** | Diseño y operación del array solar MER (NTRS 20090026397) |
-| Eficiencia de celdas MER | **≈26 %** (triple unión) | NTRS 20090026397 |
-| Irradiancia solar en Marte | **≈590 W/m²** (≈43 % de la Tierra) | NASA Mars Facts |
-| Dosis absorbida en superficie | **0,21 mGy/día** | MSL/RAD, Hassler et al. (2014) |
-| Dosis equivalente en superficie | **0,64 ± 0,12 mSv/día** | MSL/RAD, Hassler et al. (2014) |
-| Fin de Opportunity | **10 de junio de 2018**, tormenta global de polvo | NASA, *Mars Exploration Rovers* |
-| Récord de distancia (dato curioso) | Perseverance superó a Opportunity el **11 de octubre de 2026** | NASA, *Mars Exploration Rovers* |
+| MMRTG electrical power | **≈100 W continuous** | NASA, *Mars Rover Power* — <https://science.nasa.gov/resource/mars-rover-power/> |
+| MER solar array output at the start | **≈800–900 Wh/sol** | NASA/JPL via PDS Geosciences Node |
+| Output after 90 sols (dust + season) | **≈600 Wh/sol** | MER solar array design and operation (NTRS 20090026397) |
+| MER cell efficiency | **≈26%** (triple junction) | NTRS 20090026397 |
+| Solar irradiance on Mars | **≈590 W/m²** (≈43% of Earth) | NASA Mars Facts |
+| Absorbed surface dose | **0.21 mGy/day** | MSL-RAD, Hassler et al. (2014) |
+| Equivalent surface dose | **0.64 ± 0.12 mSv/day** | MSL-RAD, Hassler et al. (2014) |
+| End of Opportunity | **June 10, 2018**, global dust storm | NASA, *Mars Exploration Rovers* |
+| Distance record (fun fact) | Perseverance passed Opportunity on **October 11, 2026** | NASA, *Mars Exploration Rovers* |
 
-### Nota sobre la dosis
+### Note on the dose
 
-0,64 mSv/día × 900 soles ≈ **576 mSv**, es decir **≈96 % del límite de carrera de 600 mSv**.
-Ese es el dato que hace que la mecánica funcione: en una misión larga **no hay margen para
-errores**. En el juego, la barra de dosis avanza despacio (es honesto) y el **informe final
-proyecta a 900 soles**, que es donde el número se vuelve dramático y comprensible.
-
----
-
-## 3. Lo que NO vamos a decir
-
-- ❌ "Los paneles se recargan un 25 %" → **eliminado del brief**.
-- ❌ "El marciano daña el sistema de oxígeno" → **eliminado**: ahora es un easter egg de ficción
-  que solo ensucia los paneles y se espanta. La radiación y el O₂ solo cambian por causas reales.
-- ❌ "Área de desintoxicación de radiación" → **eliminado**: no existe. Se reemplaza por
-  *módulo de recuperación* con contramedidas respaldadas por estudios OSDR.
-- ❌ "Datos en tiempo real" para OSDR, RadLab o el clima de Marte → **son históricos** y así se etiquetan.
+0.64 mSv/day × 900 sols ≈ **576 mSv**, that is **≈96% of the 600 mSv career limit**.
+That is the figure that makes the mechanic work: on a long mission **there is no room for error**.
+In the game the dose bar moves slowly (that is honest), and the **victory screen projects to 900
+sols**, which is where the number becomes dramatic and understandable.
 
 ---
 
-## 4. Etiquetas de procedencia (copiar tal cual en la UI)
+## 3. What we will NOT say
+
+- ❌ "The panels recharge 25%" → **removed**.
+- ❌ "The Martian damages the oxygen system" → **removed**: Michi Marciano is a fictional guide and
+  does not change radiation or O₂; those only change from real causes.
+- ❌ "Radiation detox area" → **removed**: it does not exist.
+- ❌ "Real-time data" for OSDR, RadLab or the Mars climate → those are **historical/archive** and
+  are labeled as such.
+
+---
+
+## 4. Provenance labels (used verbatim in the UI)
 
 ```
-🟢 REAL EN VIVO     → DONKI (últimos 7 días)
-🔵 ARCHIVO REAL     → OSDR, RadLab, Mars Trek, Mars Rover Photos
-🟠 HISTÓRICO REAL   → InSight (2018–2020)
-⚪ REFERENCIA       → páginas de ciencia NASA (potencia, dosis, retardo)
-🔴 SIMULADO         → cuerpo del astronauta y estado de la base
+🟢 LIVE REAL DATA   → DONKI (last 30 days)
+🔵 REAL ARCHIVE     → OSDR, Mars Trek, MSL-RAD reference dose
+⚪ REFERENCE        → NASA science pages (power, dose, light delay)
+🔴 GAME MODEL       → the outpost state, the storm, the flare, the astronaut body
 ```

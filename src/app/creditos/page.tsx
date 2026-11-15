@@ -1,66 +1,63 @@
 import Link from "next/link";
 import { SOLS } from "@/lib/game/sols";
 
-export const metadata = { title: "Fuentes y créditos · Aurora Outpost" };
+export const metadata = { title: "Sources and credits · Aurora Outpost" };
 
 export default function Creditos() {
   return (
     <main style={{ maxWidth: 760, margin: "auto", padding: "48px 24px", lineHeight: 1.7, color: "#1f2937" }}>
-      <Link href="/" style={{ color: "#0ea5e9" }}>← Volver al juego</Link>
-      <h1 style={{ fontSize: "2rem", marginTop: 24 }}>Fuentes y créditos</h1>
+      <Link href="/" style={{ color: "#0ea5e9" }}>← Back to the game</Link>
+      <h1 style={{ fontSize: "2rem", marginTop: 24 }}>Sources and credits</h1>
       <p>
-        Aurora Outpost es un juego de ficción para niños de 7 a 12 años, inspirado en los juegos de
-        vigilancia por turnos. No es un simulador de entrenamiento ni una herramienta de predicción.
-        La jugabilidad (tormenta, llamarada, batería, oxígeno) son reglas de diseño; los datos de la
-        NASA solo se citan como referencia y siempre con su etiqueta de procedencia en pantalla.
+        Aurora Outpost is a fiction game for kids aged 7 to 12, inspired by shift-based watch games. It is
+        not a training simulator or a prediction tool. The gameplay (storm, flare, battery, oxygen) are
+        design rules; NASA data is only cited as reference and always with its provenance label on screen.
       </p>
 
-      <h2 style={{ marginTop: 28, fontSize: "1.3rem" }}>Datos reales que se consultan</h2>
+      <h2 style={{ marginTop: 28, fontSize: "1.3rem" }}>Real data that is queried</h2>
       <p>
-        El juego pide a un endpoint propio (<code>/api/nasa</code>) dos conjuntos de datos reales. Si no hay
-        internet o se agota la cuota, se usa automáticamente un respaldo local y se marca como
-        <em> archivo</em> o <em>histórico</em>, nunca como dato en vivo:
+        The game asks its own endpoint (<code>/api/nasa</code>) for two sets of real data. If there is no
+        internet or the quota runs out, a local fallback is used automatically and is marked as
+        <em> archive</em> or <em> historical</em>, never as live data:
       </p>
       <ul style={{ paddingLeft: 20 }}>
         <li>
-          <strong>NASA DONKI (clima espacial):</strong> eyecciones de masa coronal (CME) recientes, con su
-          identificador, fecha y velocidad medida (<code>api.nasa.gov/DONKI</code>). Se muestran en la
-          cámara 03 con la etiqueta «Datos reales en vivo · NASA DONKI» o «Registro histórico · NASA DONKI».
+          <strong>NASA DONKI (space weather):</strong> recent coronal mass ejections (CMEs), with their
+          identifier, date and measured speed (<code>api.nasa.gov/DONKI</code>). They are shown on camera 03
+          with the label “Live real data · NASA DONKI” or “Historical record · NASA DONKI”.
         </li>
         <li>
-          <strong>NASA OSDR (radiación y biología):</strong> estudios reales (accesiones <code>OSD-xxx</code>)
-          del Open Science Data Repository (<code>osdr.nasa.gov</code>), que no requieren clave. Se muestran
-          en la cámara 04 y en la pantalla de victoria con la etiqueta «Estudio real · NASA OSDR».
+          <strong>NASA OSDR (radiation and biology):</strong> real studies (accessions <code>OSD-xxx</code>)
+          from the Open Science Data Repository (<code>osdr.nasa.gov</code>), which need no key. They are
+          shown on camera 04 and on the victory screen with the label “Real study · NASA OSDR”.
         </li>
       </ul>
 
-      <h2 style={{ marginTop: 28, fontSize: "1.3rem" }}>Datos de referencia citados</h2>
+      <h2 style={{ marginTop: 28, fontSize: "1.3rem" }}>Reference data cited</h2>
       <ul style={{ paddingLeft: 20 }}>
         <li>
-          <strong>Dosis de radiación en superficie:</strong> ~0,64 mSv por sol, tomada del instrumento RAD
-          del rover Curiosity (MSL-RAD). Etiqueta: «Dosis medida real · RadLab / MSL-RAD».
+          <strong>Surface radiation dose:</strong> ~0.64 mSv per sol, taken from the RAD instrument on the
+          Curiosity rover (MSL-RAD). Label: “Real measured dose · RadLab / MSL-RAD”.
         </li>
         <li>
-          <strong>Polvo en los paneles solares:</strong> se cita el caso del rover Spirit en el Sol 1812,
-          cuando el polvo redujo la luz que llegaba a los paneles (NASA PIA11799). Etiqueta: «Modelo del
-          juego · referencia NASA PIA11799».
+          <strong>Dust on the solar panels:</strong> the game cites the Spirit rover case on Sol 1812, when
+          dust reduced the light reaching the panels (NASA PIA11799). Label: “Game model · NASA PIA11799
+          reference”.
         </li>
         <li>
-          <strong>Imagen de Marte:</strong> la cámara 01 usa una tesela orbital pública de NASA Mars Trek
-          (<code>trek.nasa.gov</code>). Etiqueta: «Imagen real de Marte · Mars Trek (archivo)».
+          <strong>Image of Mars:</strong> camera 01 uses a public orbital tile from NASA Mars Trek
+          (<code>trek.nasa.gov</code>). Label: “Real image of Mars · Mars Trek (archive)”.
         </li>
         <li>
-          <strong>Límite de carrera:</strong> la proyección didáctica de la pantalla de victoria compara la
-          dosis acumulada en 900 soles con el límite de referencia de 600 mSv. Etiqueta: «Dato de referencia ·
-          NASA».
+          <strong>Career limit:</strong> the didactic projection on the victory screen compares the dose
+          accumulated over 900 sols with the 600 mSv reference limit. Label: “Reference data · NASA”.
         </li>
       </ul>
 
-      <h2 style={{ marginTop: 28, fontSize: "1.3rem" }}>Datos históricos de DONKI usados como respaldo</h2>
+      <h2 style={{ marginTop: 28, fontSize: "1.3rem" }}>Historical DONKI data used as fallback</h2>
       <p>
-        Si la consulta en vivo falla, cada sol cita un registro real de DONKI. Es solo una referencia
-        histórica; no determina el nivel de la llamarada del juego ni demuestra que esa eyección haya
-        llegado a Marte.
+        If the live query fails, each sol cites a real DONKI record. It is only a historical reference; it
+        does not set the game&apos;s flare level and does not prove that the ejection reached Mars.
       </p>
       <ul style={{ paddingLeft: 20 }}>
         {SOLS.map((sol) => (
@@ -68,36 +65,36 @@ export default function Creditos() {
             <strong>{sol.label}:</strong> {sol.historicalEvent.activityID} ({sol.historicalEvent.date}
             {sol.historicalEvent.speedKmS ? `, ${sol.historicalEvent.speedKmS} km/s` : ""}).{" "}
             <a href={sol.historicalEvent.link} target="_blank" rel="noreferrer" style={{ color: "#0ea5e9" }}>
-              Consultar registro ↗
+              View record ↗
             </a>
           </li>
         ))}
       </ul>
 
-      <h2 style={{ marginTop: 28, fontSize: "1.3rem" }}>Qué es ficticio</h2>
+      <h2 style={{ marginTop: 28, fontSize: "1.3rem" }}>What is fictional</h2>
       <p>
-        El reloj de 60 segundos, la tormenta de polvo, el nivel de la llamarada, el consumo de batería y
-        oxígeno, las compuertas, las luces, el monitor de cámaras, el invernadero y el mini-rover son reglas
-        y escenas de diseño del juego, no mediciones ni pronósticos de la NASA. Los parámetros de dificultad
-        de cada sol (en <code>src/data/mars_sols.json</code>) también son decisiones de diseño.
+        The 60-second clock, the dust storm, the flare level, the battery and oxygen drain, the gates, the
+        lights, the camera monitor, the greenhouse and the mini-rover are design rules and scenes, not NASA
+        measurements or forecasts. The difficulty parameters of each sol (in{" "}
+        <code>src/data/mars_sols.json</code>) are design decisions too.
       </p>
       <p>
-        <strong>Michi Marciano</strong> es un personaje de ficción creado para el juego: no es un
-        asistente real ni un científico, y sus consejos son parte de la mecánica del juego. Por eso lleva
-        siempre la etiqueta «FICCIÓN · GUÍA DEL JUEGO» y, cuando cita un dato, indica si es real, de
-        referencia o una regla del juego.
+        <strong>Michi Marciano</strong> is a fictional character created for the game: he is not a real
+        assistant or a scientist, and his advice is part of the game mechanics. That is why he always carries
+        the label “FICTION · GAME GUIDE” and, when he cites a datum, he says whether it is real, reference
+        data or a game rule.
       </p>
 
-      <h2 style={{ marginTop: 28, fontSize: "1.3rem" }}>Arte, sonido e IA</h2>
+      <h2 style={{ marginTop: 28, fontSize: "1.3rem" }}>Art, sound and AI</h2>
       <p>
-        La mayoría de las ilustraciones son gráficos vectoriales (SVG) y CSS creados para este proyecto. El
-        retrato del guía «Michi Marciano» (<code>public/images/michi_guia.png</code>) es una imagen generada
-        con inteligencia artificial a partir de una descripción de texto, y se identifica como tal. Los
-        sonidos se sintetizan en el momento con la Web Audio API: no hay archivos de audio. La lectura en voz
-        alta opcional usa la síntesis de voz del propio navegador (<code>speechSynthesis</code>). También se
-        usó asistencia de IA para escribir y revisar código, estilos y textos.
+        Most of the artwork is vector graphics (SVG) and CSS created for this project. The guide&apos;s
+        portrait “Michi Marciano” (<code>public/images/michi_guia.png</code>) is an image generated with
+        artificial intelligence from a text description, and it is identified as such. Sounds are synthesized
+        on the fly with the Web Audio API: there are no audio files. The optional read-aloud uses the
+        browser&apos;s own speech synthesis (<code>speechSynthesis</code>). AI assistance was also used to
+        write and review code, styles and text.
       </p>
-      <p>La interfaz no incluye logotipos ni identificadores gráficos de la NASA.</p>
+      <p>The interface includes no NASA logos or graphic identifiers.</p>
     </main>
   );
 }

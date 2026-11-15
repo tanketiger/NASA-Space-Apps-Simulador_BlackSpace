@@ -1,7 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // Permite aislar la caché de desarrollo en Windows/OneDrive cuando sea necesario.
+  // Allows isolating the dev cache on Windows/OneDrive when needed.
   distDir: process.env.NEXT_DIST_DIR || ".next",
   images: {
     remotePatterns: [

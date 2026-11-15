@@ -1,67 +1,67 @@
-# Aurora Outpost · Tu primer turno en Marte
+# Aurora Outpost · Your first shift on Mars
 
-Juego web para niños de 7 a 12 años, inspirado en los juegos de vigilancia por turnos. Desde una cabina en primera persona sube el escudo a tiempo, vigila cuatro cámaras y sobrevive hasta las 06:00 AM. Un turno dura 60 segundos. No requiere cuenta ni descarga, y funciona aunque no haya internet (usa un respaldo local).
+Web game for kids aged 7 to 12, inspired by shift-based watch games. From a first-person cabin, raise the shield in time, watch four cameras and survive until 06:00 AM. A shift lasts 60 seconds. No account or download needed, and it works even with no internet (it uses a local fallback).
 
-## Iniciar
+## Run it
 
-En PowerShell, desde esta carpeta:
+In PowerShell, from this folder:
 
 ```powershell
 npm install
 npm run dev
 ```
 
-Abre <http://localhost:3000>. Para verificar la demo:
+Open <http://localhost:3000>. To verify the demo:
 
 ```powershell
 npm test
 npm run build
 ```
 
-Si OneDrive produce un error `EINVAL` con la caché `.next`, se puede elegir una carpeta de compilación nueva antes de iniciar:
+If OneDrive throws an `EINVAL` error with the `.next` cache, pick a fresh build folder before starting:
 
 ```powershell
 $env:NEXT_DIST_DIR = ".next-aurora-dev"
 npm run dev -- -p 3217
 ```
 
-En ese caso abre <http://localhost:3217>. Utiliza un nombre de carpeta diferente si esa caché también da problemas.
+In that case open <http://localhost:3217>. Use a different folder name if that cache also has problems.
 
-## Cómo se juega
+## How to play
 
-- **Barras (izquierda):** batería (verde), oxígeno (naranja) e integridad (celeste). Se vacían en tiempo real.
-- **ESCUDO (switch naranja):** súbelo para bajar la compuerta blindada sobre el ventanal MARTE y bloquear la tormenta y la llamarada. Consume batería extra por segundo.
-- **LUZ (switch amarillo):** enciende un haz sobre el ventanal durante 3 segundos y baja solo. Sirve para ver si hay polvo en el aire; cada pulsación actualiza el diagnóstico de Michi.
-- **CÁMARAS (switch azul):** abre la tablet CCTV con 4 pestañas (Superficie, Paneles Solares, Clima Espacial y Dosis, Invernadero y Ciencia). Al cerrarla, el switch baja.
-- **OXÍGENO (switch verde):** sube un instante (+25 % de oxígeno, −10 % de batería) y vuelve a bajar solo.
-- **LIMPIAR PANELES (puerta izquierda o botón dentro de CAM 02):** limpieza mecánica instantánea con aire comprimido: −8 % de batería y −25 puntos de polvo. Si no hay batería suficiente, avisa.
-- **CRT (derecha):** muestra el SOL, la hora (12:00 AM → 06:00 AM) y «SISTEMAS OK» / «¡ALERTA!». Sube el escudo cuando marque alerta.
-- **Batería:** cada sistema activo (escudo, luz, cámaras) consume energía. Apágalos cuando no los necesites.
-- **Michi Marciano (abajo a la izquierda):** guía del juego (ficción). Se puede minimizar con el botón `?` y leer en voz alta con el botón 🔊.
+- **Bars (left):** battery (green), oxygen (orange) and integrity (cyan). They drain in real time.
+- **SHIELD (orange switch):** raise it to lower the armored gate over the MARS window and block the storm and the flare. It drains extra battery per second.
+- **LIGHT (yellow switch):** shines a beam over the window for 3 seconds, then lowers on its own. Use it to see if there is dust in the air; every press updates Michi's diagnosis.
+- **CAMERAS (blue switch):** opens the CCTV tablet with 4 tabs (Surface, Solar Panels, Space Weather & Dose, Greenhouse & Science). Closing it lowers the switch.
+- **OXYGEN (green switch):** rises for an instant (+25% oxygen, −10% battery) and lowers on its own.
+- **CLEAN PANELS (left door or a button inside CAM 02):** instant mechanical cleaning with compressed air: −8% battery and −25 dust points. If there is not enough battery, it warns you. In CAM 02 the panels look visibly dirty as dust builds up and look clean and glossy again right after a cleaning.
+- **CRT (right):** shows the SOL, the time (12:00 AM → 06:00 AM) and “SYSTEMS OK” / “ALERT!”. Raise the shield when it shows ALERT.
+- **Battery:** every active system (shield, light, cameras) drains power. Turn them off when you do not need them.
+- **Michi Marciano (bottom left):** the game guide (fiction). You can minimize it with the `?` button and read it aloud with the 🔊 button.
 
-## Estructura
+## Structure
 
-- `src/app/page.tsx`: el juego completo en primera persona (fondo `cabina.jpg`, switches, barras, CRT, tablet CCTV de 4 cámaras, limpieza de paneles, Michi Marciano).
-- `src/app/api/nasa/route.ts`: endpoint propio con los datos reales de NASA (DONKI + OSDR) y respaldo local (`revalidate = 3600`).
-- `src/lib/game/nasa.ts`: tipos, constantes físicas de referencia y respaldos reales del feed de la NASA.
-- `src/lib/game/engine.ts`: tipos y reglas del turno (reloj, batería, oxígeno, tormenta, llamarada).
-- `src/lib/game/sound.ts`: efectos sintetizados con Web Audio API.
-- `src/lib/game/sols.ts`: lee los soles precargados.
-- `src/data/mars_sols.json`: datos de cada sol, incluido el registro histórico real de NASA DONKI.
-- `public/images/michi_guia.png`: retrato del guía, generado con IA.
-- `src/app/creditos/`: fuentes, avisos de ficción y declaración de IA.
+- `src/app/page.tsx`: the whole first-person game (background `cabina.jpg`, switches, bars, CRT, 4-camera CCTV tablet, panel cleaning, Michi Marciano).
+- `src/app/api/nasa/route.ts`: own endpoint with the real NASA data (DONKI + OSDR) and a local fallback (`revalidate = 3600`).
+- `src/lib/game/nasa.ts`: types, reference physical constants and real fallbacks for the NASA feed.
+- `src/lib/game/engine.ts`: shift types and rules (clock, battery, oxygen, storm, flare).
+- `src/lib/game/sound.ts`: effects synthesized with the Web Audio API.
+- `src/lib/game/sols.ts`: reads the preloaded sols.
+- `src/data/mars_sols.json`: data for each sol, including the real historical NASA DONKI record.
+- `public/images/michi_guia.png`: the guide's portrait, generated with AI.
+- `src/app/creditos/`: sources, fiction notices and AI disclosure.
 
-## Datos y transparencia
+## Data and transparency
 
-El juego consulta dos fuentes reales a través de su propio endpoint `/api/nasa`. Si no hay internet o se agota la cuota, cae automáticamente a un respaldo local y lo marca como archivo o histórico (nunca como dato en vivo):
+The game queries two real sources through its own endpoint `/api/nasa`. If there is no internet or the quota runs out, it falls back automatically to a local copy and marks it as archive or historical (never as live data):
 
-- **NASA DONKI** (clima espacial): eyecciones de masa coronal recientes con su identificador, fecha y velocidad medida. Se muestran en la cámara 03 con la etiqueta «Datos reales en vivo · NASA DONKI» o «Registro histórico · NASA DONKI».
-- **NASA OSDR** (radiación y biología): estudios reales `OSD-xxx`. Se muestran en la cámara 04 y en la pantalla de victoria con la etiqueta «Estudio real · NASA OSDR».
+- **NASA DONKI** (space weather): recent coronal mass ejections with their identifier, date and measured speed. Shown on camera 03 with the label “Live real data · NASA DONKI” or “Historical record · NASA DONKI”.
+- **NASA OSDR** (radiation and biology): real `OSD-xxx` studies. Shown on camera 04 and on the victory screen with the label “Real study · NASA OSDR”.
 
-Datos de referencia citados: la dosis de superficie (~0,64 mSv/sol, MSL-RAD), el caso de polvo del rover Spirit en el Sol 1812 (NASA PIA11799), la tesela orbital de NASA Mars Trek y el límite de carrera de 600 mSv.
+Reference data cited: the surface dose (~0.64 mSv/sol, MSL-RAD), the Spirit rover dust case on Sol 1812 (NASA PIA11799), the orbital tile from NASA Mars Trek and the 600 mSv career limit.
 
-**Las reglas son ficticias:** el reloj de 60 segundos, la tormenta de polvo, el nivel de la llamarada, el consumo de batería y oxígeno, el escudo, las luces, las cámaras, la limpieza de paneles, el polvo y el mini-rover son reglas y escenas de diseño, no mediciones ni pronósticos de NASA. Michi Marciano es un personaje de ficción. La app no es una herramienta de entrenamiento o seguridad. Los detalles y fuentes están en `/creditos`.
+**The rules are fictional:** the 60-second clock, the dust storm, the flare level, the battery and oxygen drain, the shield, the lights, the cameras, the panel cleaning, the dust and the mini-rover are design rules and scenes, not NASA measurements or forecasts. Michi Marciano is a fictional character. The app is not a training or safety tool. Details and sources are at `/creditos`.
 
-## IA
+## AI
 
-El código, estilos y textos se crearon con asistencia de IA. La mayoría de las ilustraciones son gráficos vectoriales (SVG) y CSS; el retrato de Michi (`public/images/michi_guia.png`) es una imagen generada con IA y se identifica como tal. Los sonidos se sintetizan por código con Web Audio API (no hay archivos de audio); la lectura en voz alta opcional usa la síntesis de voz del navegador. La interfaz no usa logotipos ni identificadores gráficos de NASA.
+The code, styles and text were created with AI assistance. Most of the artwork is vector graphics (SVG) and CSS; Michi's portrait (`public/images/michi_guia.png`) is an AI-generated image and is identified as such. Sounds are synthesized in code with the Web Audio API (there are no audio files); the optional read-aloud uses the browser's speech synthesis. The interface uses no NASA logos or graphic identifiers.

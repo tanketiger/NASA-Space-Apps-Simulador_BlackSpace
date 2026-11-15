@@ -11,21 +11,21 @@ import {
 } from "@/lib/game/nasa";
 
 /**
- * Feed de datos reales de la NASA con respaldo local automático.
+ * Real NASA data feed with an automatic local fallback.
  *
- * - NASA DONKI (clima espacial): CME recientes. Si falla, hay rate-limit o no
- *   hay eventos, se devuelve una ventana real de archivo (mayo 2024) y, como
- *   último recurso, los registros históricos de src/data/mars_sols.json.
- * - NASA OSDR (radiación/biología): estudios reales. Sin API key.
+ * - NASA DONKI (space weather): recent CMEs. If it fails, is rate-limited or has
+ *   no events, a real archive window (May 2024) is returned and, as a last
+ *   resort, the historical records from src/data/mars_sols.json.
+ * - NASA OSDR (radiation/biology): real studies. No API key needed.
  *
- * Si no hay internet o se agota la cuota, NUNCA se inventa un dato: se devuelve
- * el respaldo local marcando isLive:false y su etiqueta de procedencia.
+ * If there is no internet or the quota is gone, a datum is NEVER invented: the
+ * local fallback is returned with isLive:false and its provenance label.
  */
 export const revalidate = 3600;
 
 const NASA_KEY = process.env.NASA_API_KEY || "DEMO_KEY";
 
-/** Ventana real de archivo de DONKI (tormenta solar de mayo de 2024). */
+/** Real DONKI archive window (May 2024 solar storm). */
 const ARCHIVE_START = "2024-05-01";
 const ARCHIVE_END = "2024-05-15";
 
@@ -64,12 +64,12 @@ async function fetchDonki(startDate: string, endDate: string): Promise<CmeEvent[
   const res = await fetch(url, { next: { revalidate } });
   if (!res.ok) throw new Error(`DONKI ${res.status}`);
   const json = (await res.json()) as unknown;
-  if (!Array.isArray(json)) throw new Error("DONKI: respuesta inesperada");
+  if (!Array.isArray(json)) throw new Error("DONKI: unexpected response");
   return parseDonki(json as DonkiCme[]);
 }
 
 async function getCme(): Promise<NasaFeed["cme"]> {
-  // 1) En vivo: últimos 30 días.
+  // 1) Live: last 30 days.
   try {
     const now = new Date();
     const start = new Date(now.getTime() - 30 * 86_400_000);
@@ -78,20 +78,20 @@ async function getCme(): Promise<NasaFeed["cme"]> {
       return { events, isLive: true, mode: "live", sourceLabel: CME_SOURCE_LIVE };
     }
   } catch {
-    // cae al archivo
+    // falls through to the archive
   }
 
-  // 2) Archivo real de DONKI.
+  // 2) Real DONKI archive.
   try {
     const events = await fetchDonki(ARCHIVE_START, ARCHIVE_END);
     if (events.length > 0) {
       return { events, isLive: false, mode: "archive", sourceLabel: CME_SOURCE_HISTORICAL };
     }
   } catch {
-    // cae al respaldo local
+    // falls through to the local fallback
   }
 
-  // 3) Respaldo local (mars_sols.json).
+  // 3) Local fallback (mars_sols.json).
   return {
     events: localCmeEvents(),
     isLive: false,
@@ -113,8 +113,8 @@ async function getOsdr(): Promise<NasaFeed["osdr"]> {
       .map((hit) => {
         const src = hit._source ?? {};
         const accession = String(src.Accession ?? "");
-        // OJO: en OSDR "Project Title" puede venir como cadena vacía, por eso
-        // usamos || (no ??) para caer al "Study Title" real del estudio.
+        // NOTE: in OSDR "Project Title" can be an empty string, so we use ||
+        // (not ??) to fall back to the study's real "Study Title".
         const title = String(src["Project Title"] || src["Study Title"] || "");
         return { accession, title, url: `https://osdr.nasa.gov/bio/studies/${accession}` };
       })
@@ -123,7 +123,7 @@ async function getOsdr(): Promise<NasaFeed["osdr"]> {
       return { studies, isLive: true, sourceLabel: OSDR_SOURCE };
     }
   } catch {
-    // cae al respaldo
+    // falls through to the fallback
   }
   return { studies: OSDR_FALLBACK, isLive: false, sourceLabel: OSDR_SOURCE };
 }

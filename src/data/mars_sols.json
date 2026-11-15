@@ -1,17 +1,17 @@
 {
-  "_aviso": "Los campos historicalEvent son registros reales e historicos de NASA DONKI (api.nasa.gov). Los campos dustArrival, flareLevelUp y demas parametros de dificultad son reglas de diseño del juego, no datos ni pronosticos de la NASA.",
+  "_aviso": "The historicalEvent fields are real historical records from NASA DONKI (api.nasa.gov). The dustArrival, flareLevelUp and other difficulty parameters are game design rules, not NASA data or forecasts.",
   "sols": [
     {
       "sol": 1,
       "label": "SOL 1",
-      "difficulty": "Entrenamiento",
+      "difficulty": "Training",
       "historicalEvent": {
         "source": "NASA DONKI (api.nasa.gov/DONKI/CME)",
         "activityID": "2024-05-08T05:36:00-CME-001",
         "date": "2024-05-08T05:36Z",
         "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/30589/-1",
         "speedKmS": 870,
-        "note": "Eyeccion de masa coronal real observada el 8 de mayo de 2024 (velocidad medida 870 km/s). Se usa como referencia historica, no como pronostico de esta partida."
+        "note": "Real coronal mass ejection observed on May 8, 2024 (measured speed 870 km/s). Used as a historical reference, not as a forecast for this run."
       },
       "rules": {
         "dustStart": 8,
@@ -28,14 +28,14 @@
     {
       "sol": 2,
       "label": "SOL 2",
-      "difficulty": "Intermedio",
+      "difficulty": "Intermediate",
       "historicalEvent": {
         "source": "NASA DONKI (api.nasa.gov/DONKI/CME)",
         "activityID": "2023-02-24T02:00:00-CME-001",
         "date": "2023-02-24T02:00Z",
         "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/23900/-1",
         "speedKmS": 244,
-        "note": "Eyeccion de masa coronal real observada el 24 de febrero de 2023 (velocidad medida 244 km/s)."
+        "note": "Real coronal mass ejection observed on February 24, 2023 (measured speed 244 km/s)."
       },
       "rules": {
         "dustStart": 6,
@@ -52,14 +52,14 @@
     {
       "sol": 3,
       "label": "SOL 3",
-      "difficulty": "Avanzado",
+      "difficulty": "Advanced",
       "historicalEvent": {
         "source": "NASA DONKI (api.nasa.gov/DONKI/CME)",
         "activityID": "2022-03-28T00:36:00-CME-001",
         "date": "2022-03-28T00:36Z",
         "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/19567/-1",
         "speedKmS": 441,
-        "note": "Eyeccion de masa coronal real observada el 28 de marzo de 2022 (velocidad medida 441 km/s)."
+        "note": "Real coronal mass ejection observed on March 28, 2022 (measured speed 441 km/s)."
       },
       "rules": {
         "dustStart": 4,

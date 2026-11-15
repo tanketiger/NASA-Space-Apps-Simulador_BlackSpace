@@ -17,9 +17,9 @@ const chakra = Chakra_Petch({
 });
 
 export const metadata: Metadata = {
-  title: "Aurora Outpost · Tu primer turno en Marte",
+  title: "Aurora Outpost · Your first shift on Mars",
   description:
-    "Juego de cabina para niños: sube el escudo a tiempo, vigila las cámaras y sobrevive hasta las 06:00 AM en el puesto avanzado de Marte.",
+    "Cabin game for kids: raise the shield in time, watch the cameras and survive until 06:00 AM at the Mars outpost.",
 };
 
 export const viewport: Viewport = {
@@ -32,7 +32,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="es" className={`${fredoka.variable} ${chakra.variable}`}>
+    <html lang="en" className={`${fredoka.variable} ${chakra.variable}`}>
       <body>{children}</body>
     </html>
   );

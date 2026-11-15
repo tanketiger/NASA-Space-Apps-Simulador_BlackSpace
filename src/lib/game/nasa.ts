@@ -1,26 +1,26 @@
 import { SOLS } from "./sols";
 
 /**
- * Tipos y respaldos locales del feed de datos reales de la NASA.
+ * Types and local fallbacks for the real NASA data feed.
  *
- * Regla del proyecto: NUNCA inventamos una medición. O el dato viene de una
- * API real (y se etiqueta como "en vivo" o "archivo"), o viene de un estudio
- * publicado (OSDR / MSL-RAD) y se cita su procedencia.
+ * Project rule: we NEVER invent a measurement. Either the datum comes from a real
+ * API (and is labeled "live" or "archive"), or it comes from a published study
+ * (OSDR / MSL-RAD) and its source is cited.
  */
 
 export interface CmeEvent {
-  /** Identificador real de NASA DONKI, p. ej. "2024-05-08T05:36:00-CME-001". */
+  /** Real NASA DONKI identifier, e.g. "2024-05-08T05:36:00-CME-001". */
   activityID: string;
-  /** Fecha/hora real de inicio del CME (ISO 8601 UTC). */
+  /** Real CME start date/time (ISO 8601 UTC). */
   startTime: string;
-  /** Velocidad medida del CME en km/s (null si DONKI no la publicó). */
+  /** Measured CME speed in km/s (null if DONKI did not publish it). */
   speedKmS: number | null;
-  /** Enlace al visor de DONKI/CCMC. */
+  /** Link to the DONKI/CCMC viewer. */
   link: string;
 }
 
 export interface OsdrStudy {
-  /** Accesión real tipo OSD-73. */
+  /** Real accession such as OSD-73. */
   accession: string;
   title: string;
   url: string;
@@ -43,34 +43,34 @@ export interface NasaFeed {
   fetchedAt: string;
 }
 
-// ── Etiquetas de procedencia (obligatorias en la UI) ──────────────────────────
-export const CME_SOURCE_LIVE = "Datos reales en vivo · NASA DONKI";
-export const CME_SOURCE_HISTORICAL = "Registro histórico · NASA DONKI";
-export const OSDR_SOURCE = "Estudio real · NASA OSDR";
-export const DOSE_SOURCE = "Dosis medida real · RadLab / MSL-RAD";
-export const PANELS_SOURCE = "Modelo del juego · referencia NASA PIA11799";
-export const SURFACE_SOURCE = "Imagen real de Marte · Mars Trek (archivo)";
+// ── Provenance labels (required in the UI) ────────────────────────────────────
+export const CME_SOURCE_LIVE = "Live real data · NASA DONKI";
+export const CME_SOURCE_HISTORICAL = "Historical record · NASA DONKI";
+export const OSDR_SOURCE = "Real study · NASA OSDR";
+export const DOSE_SOURCE = "Real measured dose · RadLab / MSL-RAD";
+export const PANELS_SOURCE = "Game model · NASA PIA11799 reference";
+export const SURFACE_SOURCE = "Real image of Mars · Mars Trek (archive)";
 
-// ── Constantes físicas reales usadas en las proyecciones ─────────────────────
+// ── Real physical constants used in the projections ───────────────────────────
 /**
- * Dosis equivalente de referencia en la superficie marciana, medida por el
- * instrumento RAD del rover Curiosity (MSL-RAD · Hassler et al., 2014):
- * ~0.21 mGy/día absorbidos ≈ 0.64 mSv/día equivalentes.
+ * Reference equivalent dose on the Martian surface, measured by the RAD
+ * instrument on the Curiosity rover (MSL-RAD · Hassler et al., 2014):
+ * ~0.21 mGy/day absorbed ≈ 0.64 mSv/day equivalent.
  */
 export const BASE_DOSE_MSV_PER_SOL = 0.64;
-/** Límite de carrera recomendado para astronautas (NASA, ~600 mSv). */
+/** Recommended career limit for astronauts (NASA, ~600 mSv). */
 export const CAREER_LIMIT_MSV = 600;
-/** Duración didáctica de una estancia larga: 900 soles marcianos. */
+/** Didactic length of a long stay: 900 Martian sols. */
 export const CAREER_SOLS = 900;
-/** Factor didáctico de dosis durante una eyección de masa coronal. */
+/** Didactic dose factor during a coronal mass ejection. */
 export const CME_DOSE_MULTIPLIER = 2;
 
-// ── Imagen orbital real de Marte (NASA Mars Trek, tesela pública) ─────────────
+// ── Real orbital image of Mars (NASA Mars Trek, public tile) ──────────────────
 export const MARS_TREK_TILE =
   "https://trek.nasa.gov/tiles/Mars/EQ/Mars_Viking_MDIM21_ClrMosaic_global_232m/1.0.0/default/default028mm/2/1/1.jpg";
 
-// ── Respaldo local verificado (por si no hay red o se agota la cuota) ─────────
-/** Estudios reales de radiación espacial publicados en NASA OSDR. */
+// ── Verified local fallback (in case there is no network or the quota is gone) ─
+/** Real space-radiation studies published in NASA OSDR. */
 export const OSDR_FALLBACK: OsdrStudy[] = [
   {
     accession: "OSD-73",
@@ -91,7 +91,7 @@ export const OSDR_FALLBACK: OsdrStudy[] = [
   },
 ];
 
-/** Eventos CME reales ya citados en mars_sols.json (con su velocidad medida). */
+/** Real CME events already cited in mars_sols.json (with their measured speed). */
 export function localCmeEvents(): CmeEvent[] {
   return SOLS.map((s) => ({
     activityID: s.historicalEvent.activityID,
@@ -101,7 +101,7 @@ export function localCmeEvents(): CmeEvent[] {
   }));
 }
 
-/** Feed 100% local: sirve para arrancar sin red y como último respaldo. */
+/** 100% local feed: lets the game boot offline and acts as the last fallback. */
 export function localFeed(): NasaFeed {
   return {
     cme: {
@@ -115,14 +115,14 @@ export function localFeed(): NasaFeed {
   };
 }
 
-/** Estudio OSDR "desbloqueado" en un Sol concreto (rotación determinista). */
+/** OSDR study "unlocked" on a given Sol (deterministic rotation). */
 export function studyForSol(solNumber: number, studies: OsdrStudy[]): OsdrStudy {
   const list = studies.length > 0 ? studies : OSDR_FALLBACK;
   const i = Math.abs(solNumber - 1) % list.length;
   return list[i];
 }
 
-/** Transmitancia solar didáctica: 100% menos el polvo acumulado. */
+/** Didactic solar transmittance: 100% minus the accumulated dust. */
 export function solarTransmittance(dust: number): number {
   return Math.max(0, Math.min(100, 100 - dust));
 }

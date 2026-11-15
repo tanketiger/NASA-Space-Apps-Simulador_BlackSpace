@@ -2,7 +2,7 @@
   "name": "aurora-outpost",
   "version": "0.1.0",
   "private": true,
-  "description": "AURORA — puesto avanzado en Marte. Simulador educativo con datos reales de la NASA.",
+  "description": "AURORA — outpost on Mars. Educational game with real NASA data.",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

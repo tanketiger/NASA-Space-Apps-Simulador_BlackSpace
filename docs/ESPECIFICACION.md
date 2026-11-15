@@ -1,255 +1,218 @@
-# AURORA — Puesto Avanzado en Marte
+# AURORA — Outpost on Mars
 
-> **DOCUMENTO ANTERIOR, NO VIGENTE.** El rediseño vigente está en `REDISENO.md`.
-> Las cifras de energía, blindaje, dosis y riesgos de abajo eran parámetros del prototipo,
-> no mediciones verificadas de una base marciana. No deben presentarse como datos NASA.
-### Documento maestro del proyecto (versión ajustada)
+> **Master document of the project (adjusted).**
+> This version reflects what is actually built today. Anything marked *future* is not implemented
+> and is not presented as implemented.
 
-> **Estado:** especificación v0.2 — lista para construir.
-> Este documento reemplaza la sección "Proyecto / Funciones / Restricciones" del brief original
-> y añade lo que faltaba: economía de recursos con cifras reales, distinción entre datos
-> **en vivo** e **históricos**, y el alcance exacto del prototipo.
+**Status:** specification v0.3 — implemented as a 60-second shift game.
 
 ---
 
-## 1. Pitch en una frase
+## 1. One-sentence pitch
 
-**AURORA** es un simulador web donde un niño de 7 a 12 años dirige un puesto avanzado en Marte
-y descubre, jugando, que **la energía es finita y que el clima real del espacio decide si tu plan funciona**.
+**AURORA** is a web game where a kid aged 7 to 12 runs an outpost on Mars and discovers, by playing,
+that **power is finite and that the real space weather decides whether the plan works**.
 
-Cada sol (día marciano) reparte la misma energía entre cuatro cosas que compiten:
-**sobrevivir, protegerse, comunicarse y hacer ciencia**. No hay opción gratis.
+Each sol (Martian day) splits the same power among things that compete: **survive, protect yourself
+and do science**. There is no free option.
 
 ---
 
-## 2. Los dos públicos
+## 2. The two audiences
 
-| Público | Qué se lleva |
+| Audience | What they take away |
 |---|---|
-| **Niños 7–12** | Un juego claro, con 3 medidores grandes, decisiones de 30 segundos y consecuencias visibles al final del sol. |
-| **Astronautas / planificadores** | Un modelo de disyuntivas con cifras trazables a fuentes NASA, útil para explicar por qué una decisión "segura" consume el margen de la siguiente. |
+| **Kids 7–12** | A clear game, with three big meters, 60-second decisions and consequences visible at the end of the shift. |
+| **Judges / planners** | A trade-off model with figures traceable to NASA sources, useful to explain why a "safe" decision eats the next one's margin. |
 
-**Regla de oro:** si una decisión no tiene costo, no entra al juego.
-
----
-
-## 3. La frase de diseño (no negociable)
-
-> **"Cada sol tienes energía limitada; el clima real de Marte decide si tu plan funciona."**
-
-Todo lo demás —las tres salas, los minijuegos, el marciano— está al servicio de esa frase.
+**Golden rule:** if a decision has no cost, it does not go in the game.
 
 ---
 
-## 4. Bucle de juego (un sol ≈ 90 segundos)
+## 3. The design sentence (non-negotiable)
+
+> **"Each sol you have limited power; the real weather on Mars decides whether your plan works."**
+
+---
+
+## 4. Game loop (one shift = 60 seconds)
 
 ```
-┌─ BRIEFING ───────────────────────────────────────────────┐
-│ Clima espacial real (DONKI) + estado de la base           │
+┌─ CABIN ──────────────────────────────────────────────────┐
+│ Three meters: battery · oxygen · integrity                │
+│ Central MARS window · CRT telemetry · four switches       │
+│ CCTV tablet (4 cameras) · Michi Marciano guide            │
 └───────────────────────────┬───────────────────────────────┘
                             ▼
-┌─ REPARTO DE ENERGÍA ─────────────────────────────────────┐
-│ 4 deslizadores (kWh):                                     │
-│   • Soporte vital   (obligatorio: 12 kWh)                 │
-│   • Escudo          (0–15 kWh → 0–100 %)                  │
-│   • Comunicaciones  (3 kWh → pronóstico del próximo sol)  │
-│   • Ciencia         (5 kWh → 1 punto + estudio real OSDR) │
+┌─ DECISIONS (every second) ───────────────────────────────┐
+│ SHIELD  → block the storm and the flare (drains battery)  │
+│ LIGHT   → 3 s beam, reveals the dust (drains battery)     │
+│ CAMERAS → open the CCTV tablet (drains battery)           │
+│ OXYGEN  → +25% O₂ for −10% battery                        │
+│ CLEAN   → −25 dust for −8% battery                        │
 └───────────────────────────┬───────────────────────────────┘
                             ▼
-┌─ ACCIONES ───────────────────────────────────────────────┐
-│ Limpiar paneles · Reparar · Expedición del rover ·        │
-│ Cosechar · Descansar la tripulación                       │
+┌─ SHIFT RESOLUTION ───────────────────────────────────────┐
+│ Storm + flare hits → integrity → battery/oxygen drain →   │
+│ victory at 06:00 AM, or a loss with the cause explained   │
 └───────────────────────────┬───────────────────────────────┘
                             ▼
-┌─ RESOLUCIÓN DEL SOL ─────────────────────────────────────┐
-│ Generación solar real (polvo + tormenta) → consumo →      │
-│ dosis de radiación → eventos → O₂, comida, batería        │
-└───────────────────────────┬───────────────────────────────┘
-                            ▼
-                    Bitácora científica
-              (estudios reales desbloqueados)
+                  Victory screen
+        (OSDR study + dose projection to 900 sols)
 ```
 
-**Condición de derrota:** O₂ a 0 o batería a 0 con sistemas críticos apagados.
-**Condición de victoria:** completar los soles de la misión con la tripulación viva y al menos
-un estudio científico desbloqueado.
+**Loss condition:** battery reaches 0, oxygen reaches 0, or integrity reaches 0.
+**Win condition:** reach 06:00 AM with the outpost still running.
 
 ---
 
-## 5. Economía de recursos (cifras con fuente)
+## 5. Resource economy (figures with sources)
 
-Todas las cifras de esta tabla son **reales y citables**. Ver `DATOS-VERIFICADOS.md`.
+All the figures in this table are **real and citable**. See `DATOS-VERIFICADOS.md`.
 
-| Parámetro | Valor en el juego | Base real |
+| Parameter | Value in the game | Real basis |
 |---|---|---|
-| Planta solar | **30 kWh/sol** nominal (24 m²) | Irradiancia marciana ≈ 590 W/m² (43 % de la Tierra); celdas tipo MER de triple unión |
-| Batería | **60 kWh** | Almacenamiento de un sol completo |
-| Generador RTG | **2,4 kWh/sol** constante (100 W) | MMRTG de Curiosity: ~100 W eléctricos continuos |
-| Demanda de soporte vital | **12 kWh/sol** | Orden de magnitud de un hábitat presurizado pequeño |
-| Escudo de radiación | **15 kWh/sol → 100 %** | Costo energético de un blindaje activo/pasivo |
-| Comunicaciones | **3 kWh/sol** | Da el pronóstico del sol siguiente |
-| Ciencia | **5 kWh/sol → 1 punto** | Desbloquea un estudio real de OSDR |
-| Invernadero | **4 kWh/sol → +1 día de comida** | Producción de alimentos en hábitat |
-| Dosis base en superficie | **0,64 mSv/sol** | MSL/RAD (Hassler et al., 2014): 0,21 mGy/día → 0,64 ± 0,12 mSv/día |
-| Límite de carrera | **600 mSv** | Estándar de exposición de la tripulación NASA |
-| Proyección didáctica | **900 soles** | Duración de referencia de una estancia en superficie |
+| Solar plant | **30 kWh/sol** nominal (24 m²) | Martian irradiance ≈ 590 W/m² (43% of Earth); MER-style triple-junction cells |
+| RTG generator | **2.4 kWh/sol** constant (100 W) | Curiosity's MMRTG: ~100 W continuous electrical |
+| Base dose on the surface | **0.64 mSv/sol** | MSL-RAD (Hassler et al., 2014): 0.21 mGy/day → 0.64 ± 0.12 mSv/day |
+| Career limit | **600 mSv** | NASA crew exposure standard |
+| Didactic projection | **900 sols** | Reference length of a surface stay |
+| Panel cleaning | **−25 dust, −8% battery** | Spirit Sol 1812 transmittance (PIA11799) |
+| Oxygen pump | **+25% O₂, −10% battery** | Game rule |
+| CME dose factor | **×2** | Didactic factor for a coronal mass ejection |
 
-**La tensión está calculada:** la demanda nominal (12 + 15 + 3 + 5 + 4 = **39 kWh**) supera
-la generación limpia (**30 kWh**). Con el escudo al 100 % **no alcanza**: hay que elegir.
-Eso es exactamente lo que el jurado quiere ver.
+> The kWh figures are the design basis of the outpost; the in-game meters are normalized to 0–100%
+> so that a kid can read them at a glance.
 
 ---
 
-## 6. Las tres salas (especificación cerrada)
+## 6. The cabin (implemented)
 
-### Sala 1 — Control de la base
+- **Three meters:** battery (green), oxygen (orange) and integrity (cyan), drawn inside the slots of
+  the background image.
+- **Central MARS window:** dust-storm overlay, the LIGHT beam and the armored shield gate.
+- **Four switches:** SHIELD (orange), LIGHT (yellow), CAMERAS (blue), OXYGEN (green), each with an
+  indicator LED and a press animation.
+- **CRT telemetry monitor:** Sol, time and “SYSTEMS OK” / “ALERT!”.
+- **Left door:** CLEAN PANELS (−8% battery).
+- **Mini-rover:** an easter egg that bounces when you boop it.
+- **Michi Marciano:** the fictional guide card, with five contextual lines.
 
-Monitor central con seis paneles:
+### CCTV (four cameras)
 
-1. **Signos vitales** (modelo, no dato): frecuencia cardiaca, O₂ en sangre, temperatura.
-2. **Oxígeno** del hábitat (%).
-3. **Radiación**: dosis acumulada en mSv + tasa del sol actual.
-4. **Energía**: batería, generación solar, consumo por sistema.
-5. **Clima espacial**: chip con el evento real de DONKI (CME, flare, tormenta geomagnética).
-6. **Reloj**: sol, hora local marciana y retardo de comunicación real (4–24 min).
-
-Extras: **dos ventanas** con imagen real de Marte (Mars Trek / NASA Image Library),
-**cámara exterior** y el **deslizador de escudo** (kWh → % de protección).
-
-### Sala 2 — Exterior
-
-- **Tres paneles solares** con acumulación de polvo visible. Limpiarlos cuesta **2 kWh**.
-- **Tormenta de polvo**: la generación cae hasta un 85 %. Es el evento que mató a Opportunity
-  en 2018 y el jugador lo vive.
-- **Remolino de polvo** (evento real y positivo): puede limpiar los paneles solo. Ocurre de verdad.
-- **Rover de expedición**: cuesta 8 kWh, da ciencia y **sube la dosis** según el clima del sol.
-- **Mapa real de Marte** con tiles de Mars Trek (imagen de superficie auténtica).
-
-### Sala 3 — Módulo de vitales
-
-- **Dosímetro**: dosis acumulada vs. límite de carrera, con proyección a 900 soles.
-- **Blindaje**: estado del escudo y su costo energético del sol.
-- **Cartas de ciencia (OSDR)**: cada estudio real desbloqueado explica un efecto real del
-  vuelo espacial (hueso, músculo, sueño, sistema inmune) y habilita una contramedida.
-- **Contramedidas**: ejercicio, sueño, nutrición, antioxidantes. **No existe "desintoxicación"
-  de radiación**: se renombra a *recuperación*, y cada carta cita su estudio.
-
----
-
-## 7. Eventos
-
-### 7.1 Eventos reales (datos NASA)
-
-| Evento | Disparador | Efecto en el juego |
+| Camera | Content | Provenance label |
 |---|---|---|
-| **CME / tormenta solar** | DONKI: CME con velocidad alta o GST/SEP | La dosis del sol se multiplica ×4–×12 |
-| **Tormenta de polvo** | Escenario histórico | Generación solar ×0,15 durante varios soles |
-| **Remolino de polvo** | Aleatorio (real) | Limpia polvo de los paneles (¡ayuda!) |
-| **Fallo de panel** | Aleatorio tras tormenta | Capacidad solar −20 % hasta reparar |
-| **Fuga de O₂** | Aleatorio | Demanda de soporte vital +3 kWh hasta reparar |
-
-### 7.2 El marciano (easter egg, no ciencia)
-
-Se conserva el personaje cómico que pidió el equipo, **pero etiquetado como ficción**:
-
-- Aparece ~1 de cada 10 soles.
-- **Tira tierra a la ventana** → +8 % de polvo en los paneles.
-- Hay que **salir a espantarlo** (clic repetido / miniacción de 3 s) y se va corriendo.
-- No afecta la radiación ni el oxígeno: **no simula ciencia**, solo humor.
-- En pantalla lleva la etiqueta `FICCIÓN · EASTER EGG` para que el jurado no lo confunda
-  con un dato de la NASA.
+| **CAM 01 · SURFACE** | Real orbital tile (NASA Mars Trek) with a CCTV filter and storm state | `Real image of Mars · Mars Trek (archive)` |
+| **CAM 02 · SOLAR PANELS** | Dust %, solar transmittance, CLEAN PANELS button; the panels look dirty as dust builds up and clean again after cleaning | `Game model · NASA PIA11799 reference` |
+| **CAM 03 · SPACE WEATHER & DOSE** | Real CME (live or archive) + surface dose | `Live real data · NASA DONKI` / `Historical record · NASA DONKI` and `Real measured dose · RadLab / MSL-RAD` |
+| **CAM 04 · GREENHOUSE & SCIENCE** | Oxygen + a real OSDR study card | `Real study · NASA OSDR` |
 
 ---
 
-## 8. Datos: en vivo vs. históricos (obligatorio en la UI)
+## 7. Events
 
-Cada dato que aparece en pantalla lleva una etiqueta visible. **Nunca se presenta un dato
-histórico como si fuera en vivo.**
+### 7.1 Real events (NASA data)
 
-| Dato en pantalla | Fuente | Tipo | Etiqueta exacta |
+| Event | Trigger | Effect in the game |
+|---|---|---|
+| **CME / solar storm** | DONKI: recent CME record | The dose of the sol is multiplied (×2) |
+| **Dust storm** | Scenario (design rule) | The landscape darkens, dust drifts and the cabin vibrates if the gate is open |
+| **Panel dust** | Always on (design rule) | Solar transmittance falls; clean it to recover it |
+
+### 7.2 Michi Marciano (fiction)
+
+Michi is the game's guide, **clearly labeled as fiction**:
+
+- Always carries the label `FICTION · GAME GUIDE`.
+- When he cites a datum, he says whether it is real, reference data or a game rule.
+- He does **not** change radiation or oxygen: those only change from real causes.
+
+---
+
+## 8. Data: live vs. historical (required in the UI)
+
+Every datum on screen carries a visible label. **A historical datum is never presented as live.**
+
+| Datum on screen | Source | Type | Exact label |
 |---|---|---|---|
-| Clima espacial, CME, flares, tormentas geomagnéticas | **DONKI** | 🟢 **REAL EN VIVO** (últimos 7 días) | `Datos reales en vivo · NASA DONKI` |
-| Terreno y mosaico de Marte | **Mars Trek** | 🔵 Archivo real (misiones pasadas) | `Imagen real de Marte · Mars Trek (archivo)` |
-| Fotos de superficie | **Mars Rover Photos / NASA Image Library** | 🔵 Archivo real | `Foto real · NASA (archivo)` |
-| Temperatura, viento y presión de Marte | **InSight** | 🟠 **HISTÓRICO REAL** (2018–2020) | `Clima real histórico · InSight 2018–2020` |
-| Estudios de salud y biología | **OSDR** | 🔵 Archivo real | `Estudio real · OSDR {accession}` |
-| Dosis de radiación medida | **RadLab** | 🔵 Archivo real (ISS) | `Dosis medida real · RadLab` |
-| Potencia de paneles, límite de dosis, retardo de luz | **Páginas de ciencia NASA** | ⚪ Referencia real | `Dato de referencia · NASA` |
-| Cuerpo del astronauta (pulso, SpO₂) | **Modelo del juego** | 🔴 **SIMULADO** | `Modelo del juego · no es dato NASA` |
+| Space weather (CMEs) | **DONKI** | 🟢 **LIVE REAL DATA** (last 30 days) | `Live real data · NASA DONKI` |
+| Space weather (fallback) | **DONKI archive / local** | 🟠 **REAL HISTORICAL** | `Historical record · NASA DONKI` |
+| Terrain and mosaic of Mars | **Mars Trek** | 🔵 Real archive | `Real image of Mars · Mars Trek (archive)` |
+| Health and biology studies | **OSDR** | 🔵 Real archive | `Real study · NASA OSDR` |
+| Measured radiation dose | **MSL-RAD / RadLab** | ⚪ Reference | `Real measured dose · RadLab / MSL-RAD` |
+| Panel power, dose limit, light delay | **NASA science pages** | ⚪ Real reference | `Reference data · NASA` |
+| Outpost state (storm, flare, dust) | **Game model** | 🔴 **SIMULATED** | `Game model · not NASA data` |
 
-> **Regla de honestidad:** el ambiente es real; el cuerpo humano es un modelo. Decirlo en
-> pantalla es lo que separa un proyecto creíble de uno que el jurado descarta.
+> **Honesty rule:** the environment is real; the outpost state is a model. Saying so on screen is
+> what separates a credible project from one the jury discards.
 
 ---
 
-## 9. Rejugabilidad
+## 9. Replayability
 
-Dos escenarios, ambos construidos con **ventanas de fechas reales**:
+The engine is the same across sols; only the difficulty parameters and the cited real CME change.
+That is replayability **without inventing data**.
 
-| Escenario | Ventana | Dificultad |
+| Sol | Difficulty | Cited real CME (fallback) |
 |---|---|---|
-| **Calma en Jezero** | Ventana sin eventos solares relevantes | Aprender el sistema |
-| **La tormenta** | Ventana histórica con actividad solar alta | Supervivencia |
-
-El motor es el mismo. Cambia el clima real. Eso es rejugabilidad **sin inventar datos**.
-
----
-
-## 10. Accesibilidad
-
-- Botones de mínimo 48 px, contraste AA, sin dependencia de color (cada medidor tiene icono + número).
-- Narración opcional con Web Speech API (lectura de textos).
-- Textos en español simple; los términos técnicos se explican **en contexto**, no en un glosario.
-- Sin cuenta, sin descarga, sin instalar nada: se abre en el navegador.
-- Responsive; se recomienda horizontal en móvil.
+| **SOL 1** | Training | `2024-05-08T05:36:00-CME-001` (870 km/s) |
+| **SOL 2** | Intermediate | `2023-02-24T02:00:00-CME-001` (244 km/s) |
+| **SOL 3** | Advanced | `2022-03-28T00:36:00-CME-001` (441 km/s) |
 
 ---
 
-## 11. Cumplimiento
+## 10. Accessibility
 
-- **Cero elementos de marca NASA**: sin logos, sin banderas, sin parches, sin tipografía institucional.
-  Identidad propia (AURORA) y paleta propia.
-- **Contenido generado por IA**: se declara en `/creditos` con marca de agua visible cuando aplique.
-  Decisión del equipo: **usar imagen real de NASA + ilustración SVG propia** para minimizar riesgo.
-- **Datos**: cada pantalla con datos tiene enlace a la fuente original verificable.
-
----
-
-## 12. Alcance del prototipo
-
-**Entra (MVP):**
-- 3 salas navegables.
-- Motor de simulación con 4 asignaciones de energía y 3 medidores núcleo.
-- 2 escenarios reales.
-- Limpieza de paneles + expedición del rover.
-- 6 estudios OSDR reales como cartas.
-- Panel de fuentes con enlaces y tipo de dato.
-- Informe final de misión con proyección de dosis.
-
-**No entra (fase 2):**
-- Realidad virtual (mencionada en el brief como fase posterior).
-- Multijugador, cuentas, ranking.
-- Modelos 3D del hábitat.
-- Audio doblado profesional.
+- Read-aloud with the Web Speech API (browser `speechSynthesis`), in English.
+- Simple, short texts; technical terms explained in context, not in a glossary.
+- No account, no download, nothing to install: it opens in the browser.
+- Works offline thanks to the local data fallback.
 
 ---
 
-## 13. Guion de demo (3 minutos para el jurado)
+## 11. Compliance
 
-1. Abrir el juego, elegir **"La tormenta"**.
-2. Mostrar el chip: `Datos reales en vivo · NASA DONKI` con un CME real y su velocidad.
-3. Repartir energía con el escudo al 100 % → el sistema avisa que **no alcanza**.
-4. Bajar el escudo, subir ciencia → desbloquear una carta OSDR real.
-5. Llega el CME → la dosis se dispara. Mostrar el dosímetro.
-6. Abrir el informe: **"si esta misión durara 900 soles, la tripulación acumularía X mSv"**.
-7. Cerrar con la frase: *cada decisión tiene precio, y el precio se acumula*.
+- **Zero NASA branding**: no logos, flags, patches or institutional typefaces. Own identity (AURORA)
+  and own palette.
+- **AI-generated content**: declared in `/creditos`; Michi's portrait is an AI-generated image and is
+  identified as such.
+- **Data**: every data screen links to the verifiable original source.
+
+---
+
+## 12. Scope
+
+**Implemented (MVP):**
+- First-person cabin with three meters and four switches.
+- 60-second shift engine with real-time consequences.
+- 3 sols with increasing difficulty.
+- CCTV tablet with 4 cameras and provenance labels.
+- Panel cleaning (−8% battery, −25 dust) and oxygen pump.
+- Real NASA data through `/api/nasa` with a local fallback.
+- Victory screen with a real OSDR study and a dose projection.
+
+**Future (phase 2):**
+- More sols and more OSDR studies.
+- Rover expedition mechanic.
+- Virtual reality, multiplayer, 3D habitat models, professional dubbing.
+
+---
+
+## 13. Demo script (3 minutes for the jury)
+
+1. Open the game and start a shift.
+2. Show CAM 03 with a real CME: `Live real data · NASA DONKI` plus its measured speed.
+3. Press LIGHT and show the dust beam and the storm; raise the SHIELD to block it.
+4. Open CAM 02, clean the panels and show dust % and transmittance changing.
+5. Reach 06:00 AM: show the victory screen with the OSDR study and the projection to 900 sols.
+6. Close with the sentence: *every decision has a price, and the price adds up*.
 
 ---
 
 ## 14. Stack
 
-- **Next.js 15 + TypeScript + Tailwind CSS 4** (100 % web, deploy en Vercel).
-- **Zustand** para estado; **motor de simulación puro** en `src/lib/sim` con tests.
-- **Framer Motion** para transiciones; **Canvas** para el minijuego de polvo.
-- **Route handlers** como proxy de datos (CORS + API key + caché + snapshots de respaldo).
-- **localStorage** para guardar la partida. Sin base de datos.
+- **Next.js 15 + TypeScript + Tailwind CSS 4** (100% web, deployed on Vercel).
+- **Pure shift engine** in `src/lib/game/engine.ts`, with unit tests.
+- **Web Audio API** for synthesized sound (no audio files).
+- **Route handler** as a data proxy (CORS + optional API key + 1-hour cache + local fallback).
+- No database and no localStorage: each shift is independent.
