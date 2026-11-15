@@ -1,5 +1,5 @@
-import GameClient from "@/components/GameClient";
+import NightGame from "@/components/night/NightGame";
 
 export default function Page() {
-  return <GameClient />;
+  return <NightGame />;
 }

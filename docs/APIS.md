@@ -1,5 +1,9 @@
 # APIs: qué necesito y cómo me las pasas
 
+> **DOCUMENTO ANTERIOR.** La nueva demo utiliza datos históricos precargados y no requiere
+> ninguna clave durante el juego. RadLab sí tiene una API pública documentada:
+> https://visualization.osdr.nasa.gov/radlab/gui/data-api/. Consulta `REDISENO.md`.
+
 ## Resumen
 
 | # | API | ¿Necesito credencial? | Estado | Para qué la uso |

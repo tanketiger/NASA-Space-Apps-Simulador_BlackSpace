@@ -1,4 +1,8 @@
 # AURORA — Puesto Avanzado en Marte
+
+> **DOCUMENTO ANTERIOR, NO VIGENTE.** El rediseño vigente está en `REDISENO.md`.
+> Las cifras de energía, blindaje, dosis y riesgos de abajo eran parámetros del prototipo,
+> no mediciones verificadas de una base marciana. No deben presentarse como datos NASA.
 ### Documento maestro del proyecto (versión ajustada)
 
 > **Estado:** especificación v0.2 — lista para construir.

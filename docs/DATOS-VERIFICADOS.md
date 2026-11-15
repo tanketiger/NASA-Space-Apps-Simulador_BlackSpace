@@ -1,5 +1,9 @@
 # Datos verificados y veredicto sobre el "25 %"
 
+> **AVISO DE REVISIÓN:** solo está verificada aquí la cita directa de Spirit de la sección 1.
+> Las fórmulas y cifras de la simulación anterior no están validadas para una base humana
+> y no se usan como datos reales en la nueva demo. Consulta `REDISENO.md`.
+
 > Este archivo existe para que el jurado (y el equipo) pueda auditar cada cifra del juego.
 > Toda cifra que aparezca en pantalla debe poder rastrearse hasta aquí.
 
