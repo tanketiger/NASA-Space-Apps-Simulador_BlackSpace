@@ -31,10 +31,10 @@
   "include": [
     "**/*.ts",
     "**/*.tsx",
-    ".next-aurora-dev/types/**/*.ts",
+    ".next-aurora/types/**/*.ts",
     ".next/types/**/*.ts",
     "next-env.d.ts",
-    ".next-aurora-build/types/**/*.ts"
+    ".next-aurora2/types/**/*.ts"
   ],
   "exclude": [
     "node_modules"

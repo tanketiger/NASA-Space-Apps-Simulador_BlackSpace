@@ -1,0 +1,640 @@
+/* Aurora Outpost — Estética Videojuego FNaF / Los Simpson en primera persona */
+
+@keyframes siren-flash {
+  0%, 100% {
+    background: radial-gradient(circle, rgba(239, 68, 68, 0.85) 0%, rgba(220, 38, 38, 0.4) 50%, transparent 80%);
+    box-shadow: 0 0 35px #ef4444, 0 0 70px #dc2626;
+  }
+  50% {
+    background: radial-gradient(circle, rgba(239, 68, 68, 0.15) 0%, transparent 70%);
+    box-shadow: none;
+  }
+}
+
+@keyframes crt-flicker {
+  0% { opacity: 0.98; }
+  50% { opacity: 1; }
+  52% { opacity: 0.92; }
+  54% { opacity: 1; }
+  80% { opacity: 0.96; }
+  100% { opacity: 0.99; }
+}
+
+@keyframes rover-bounce {
+  0% { transform: scale(1); }
+  30% { transform: scale(1.15, 0.85) translateY(-8px); }
+  60% { transform: scale(0.92, 1.1) translateY(-2px); }
+  100% { transform: scale(1); }
+}
+
+@keyframes boop-float {
+  0% { opacity: 0; transform: translate(-50%, 0) scale(0.7); }
+  30% { opacity: 1; transform: translate(-50%, -18px) scale(1.1); }
+  80% { opacity: 1; transform: translate(-50%, -30px) scale(1); }
+  100% { opacity: 0; transform: translate(-50%, -42px) scale(0.9); }
+}
+
+@keyframes storm-swirl {
+  0% { transform: scale(1) rotate(0deg); opacity: 0.7; }
+  50% { transform: scale(1.08) rotate(3deg); opacity: 0.95; }
+  100% { transform: scale(1) rotate(0deg); opacity: 0.7; }
+}
+
+@keyframes flare-strobe {
+  0%, 100% { opacity: 0.2; }
+  25% { opacity: 0.95; }
+  50% { opacity: 0.4; }
+  75% { opacity: 0.85; }
+}
+
+@keyframes wiper-sweep {
+  0% { transform: rotate(-40deg); }
+  50% { transform: rotate(40deg); }
+  100% { transform: rotate(-40deg); }
+}
+
+/* Contenedor principal 100vw x 100vh fijo sin scroll */
+.cabin-stage {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background-color: #090d16;
+  user-select: none;
+  font-family: var(--font-chakra), monospace;
+  box-sizing: border-box;
+}
+
+.cabin-stage * {
+  box-sizing: border-box;
+}
+
+/* Fondo de cabina fijo a pantalla completa */
+.cabin-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ===== 1. VENTANAL MARTE, LUNA & COMPUERTA ===== */
+.window-opening {
+  position: absolute;
+  left: 37.28%;
+  top: 18.63%;
+  width: 28.72%;
+  height: 26.89%;
+  overflow: hidden;
+  border-radius: 4px;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.window-exterior-view {
+  position: absolute;
+  inset: 0;
+  background: transparent;
+  overflow: hidden;
+}
+
+/* Reflector exterior (botón físico LUZ) */
+.window-spotlight {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 60%, rgba(254, 240, 138, 0.45) 0%, rgba(250, 204, 21, 0.15) 60%, transparent 90%);
+  pointer-events: none;
+  z-index: 11;
+  transition: opacity 0.2s ease;
+}
+
+/* Manchas de polvo del marcianito sobre el cristal */
+.window-dirt-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 14;
+  transition: opacity 0.3s ease;
+  background:
+    radial-gradient(circle at 35% 45%, rgba(217, 119, 6, 0.8) 0%, transparent 18%),
+    radial-gradient(circle at 65% 55%, rgba(194, 65, 12, 0.75) 0%, transparent 22%),
+    radial-gradient(circle at 45% 70%, rgba(234, 88, 12, 0.7) 0%, transparent 25%),
+    radial-gradient(circle at 80% 35%, rgba(180, 83, 9, 0.65) 0%, transparent 15%);
+}
+
+/* Sprite del marcianito travieso */
+.alien-window-container {
+  position: absolute;
+  bottom: -15px;
+  left: 50%;
+  transform: translateX(-50%) translateY(120%);
+  transition: transform 0.4s cubic-bezier(0.18, 0.89, 0.32, 1.25);
+  z-index: 13;
+  width: min(240px, 14vw);
+  height: min(240px, 14vw);
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.alien-window-container.visible {
+  transform: translateX(-50%) translateY(0%);
+}
+
+.alien-window-container.scared {
+  transform: translateX(-50%) translateY(130%) scale(0.65);
+  filter: brightness(2) contrast(1.5);
+  transition: transform 0.25s ease-in, filter 0.2s ease;
+}
+
+.alien-sprite-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* Alerta de tormenta sobre el ventanal */
+.window-dust-overlay {
+  position: absolute;
+  inset: -20%;
+  background: radial-gradient(circle at 40% 60%, rgba(217, 119, 6, 0.85), rgba(180, 83, 9, 0.6) 50%, transparent 80%);
+  animation: storm-swirl 2s ease-in-out infinite;
+  z-index: 11;
+}
+
+/* Destello solar CME */
+.window-flare-overlay {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 70% 30%, rgba(254, 240, 138, 0.95), rgba(249, 115, 22, 0.8) 60%, transparent 100%);
+  animation: flare-strobe 0.35s ease-in-out infinite;
+  z-index: 11;
+}
+
+/* Compuerta metálica blindada */
+.blast-shutter {
+  position: absolute;
+  inset: 0;
+  transform: translateY(-102%);
+  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  background: repeating-linear-gradient(
+    180deg,
+    #334155 0px,
+    #475569 8px,
+    #1e293b 8px,
+    #0f172a 16px
+  );
+  border: 4px solid #090d16;
+  box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.8), 0 10px 25px rgba(0, 0, 0, 0.9);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 8px;
+  z-index: 15;
+}
+
+.blast-shutter.closed {
+  transform: translateY(0%);
+}
+
+.hazard-strip {
+  width: 100%;
+  height: 14px;
+  background: repeating-linear-gradient(
+    -45deg,
+    #eab308 0 14px,
+    #0f172a 14px 28px
+  );
+  border: 2px solid #000;
+  border-radius: 2px;
+}
+
+.shutter-plate {
+  margin: auto;
+  background: #111827;
+  border: 2px solid #eab308;
+  padding: 6px 14px;
+  border-radius: 4px;
+  text-align: center;
+  box-shadow: 0 0 14px rgba(234, 179, 8, 0.35);
+}
+
+/* ===== 2. CONTROLES 100% FÍSICOS (ÁREAS CLICABLES INVISIBLES CON HOVER) ===== */
+.physical-hotspot {
+  position: absolute;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  padding: 0;
+  z-index: 25;
+  border-radius: 6px;
+  transition: all 0.15s ease-in-out;
+  outline: none;
+}
+
+.physical-hotspot:hover {
+  box-shadow: 0 0 0 2px rgba(250, 204, 21, 0.8), 0 0 18px rgba(250, 204, 21, 0.5);
+  background: rgba(250, 204, 21, 0.12);
+}
+
+.physical-hotspot:active {
+  transform: scale(0.96);
+  background: rgba(250, 204, 21, 0.25);
+}
+
+/* Tooltip sutil en hover */
+.hotspot-tooltip {
+  position: absolute;
+  bottom: 105%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(15, 23, 42, 0.95);
+  color: #facc15;
+  border: 1px solid #facc15;
+  border-radius: 4px;
+  padding: 2px 8px;
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+  z-index: 30;
+}
+
+.physical-hotspot:hover .hotspot-tooltip {
+  opacity: 1;
+}
+
+/* ===== 3. VISORES LED IZQUIERDOS ===== */
+.led-visor-slot {
+  position: absolute;
+  left: 23.89%;
+  width: 9.79%;
+  height: 7.05%;
+  z-index: 15;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  padding: 0 4%;
+  pointer-events: auto;
+  cursor: help;
+}
+
+.led-visor-slot.battery { top: 17.30%; }
+.led-visor-slot.oxygen { top: 26.74%; }
+.led-visor-slot.integrity { top: 36.19%; }
+
+.led-dot {
+  width: clamp(10px, 1.35vw, 22px);
+  height: clamp(10px, 1.35vw, 22px);
+  border-radius: 50%;
+  border: 2px solid rgba(0, 0, 0, 0.6);
+  background: #0f172a;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.8);
+  transition: all 0.2s ease;
+}
+
+.led-dot.green-active {
+  background: #4ade80;
+  box-shadow: 0 0 12px #22c55e, 0 0 24px #16a34a, inset 0 0 4px #bbf7d0;
+}
+
+.led-dot.cyan-active {
+  background: #38bdf8;
+  box-shadow: 0 0 12px #0ea5e9, 0 0 24px #0284c7, inset 0 0 4px #e0f2fe;
+}
+
+.led-dot.yellow-active {
+  background: #facc15;
+  box-shadow: 0 0 12px #eab308, 0 0 24px #ca8a04, inset 0 0 4px #fef08a;
+}
+
+.led-dot.red-active {
+  background: #f87171;
+  box-shadow: 0 0 14px #ef4444, 0 0 28px #dc2626, inset 0 0 4px #fecaca;
+  animation: led-blink 0.5s steps(2) infinite;
+}
+
+@keyframes led-blink {
+  0%, 100% { opacity: 1; filter: brightness(1.2); }
+  50% { opacity: 0.3; filter: brightness(0.7); }
+}
+
+/* ===== 4. MONITOR CRT DERECHO ===== */
+.crt-screen-slot {
+  position: absolute;
+  left: 71.93%;
+  top: 22.67%;
+  width: 9.46%;
+  height: 19.62%;
+  z-index: 15;
+  border-radius: 6px;
+  overflow: hidden;
+  background: radial-gradient(circle at center, #072513 0%, #031309 85%, #010603 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: clamp(4px, 0.6vw, 10px);
+  border: 1px solid rgba(74, 222, 128, 0.3);
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.9), 0 0 15px rgba(34, 197, 94, 0.15);
+  animation: crt-flicker 4s infinite;
+}
+
+.crt-scanlines {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.25) 0px,
+    rgba(0, 0, 0, 0.25) 2px,
+    transparent 2px,
+    transparent 4px
+  );
+  z-index: 20;
+}
+
+.crt-time-text {
+  font-size: clamp(14px, 1.4vw, 22px);
+  font-weight: 700;
+  color: #86efac;
+  text-shadow: 0 0 8px #22c55e, 0 0 14px #16a34a;
+  letter-spacing: 1px;
+}
+
+.crt-sol-badge {
+  font-size: clamp(8px, 0.7vw, 11px);
+  color: #4ade80;
+  opacity: 0.85;
+}
+
+.crt-power-row {
+  margin-top: 2px;
+}
+
+.crt-bars-wrap {
+  display: flex;
+  gap: 3px;
+  margin-top: 3px;
+}
+
+.crt-power-bar {
+  flex: 1;
+  height: clamp(5px, 0.65vw, 10px);
+  background: #0f172a;
+  border-radius: 2px;
+  border: 1px solid rgba(0, 0, 0, 0.8);
+  transition: all 0.2s;
+}
+
+.crt-power-bar.bar-1 { background: #22c55e; box-shadow: 0 0 8px #22c55e; }
+.crt-power-bar.bar-2 { background: #eab308; box-shadow: 0 0 8px #eab308; }
+.crt-power-bar.bar-3 { background: #f97316; box-shadow: 0 0 8px #f97316; }
+.crt-power-bar.bar-4 { background: #ef4444; box-shadow: 0 0 10px #ef4444; animation: led-blink 0.4s infinite; }
+
+.crt-siren-beacon {
+  position: absolute;
+  left: 74.0%;
+  top: 6.5%;
+  width: 5.5%;
+  height: 12.5%;
+  z-index: 14;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.crt-siren-beacon.alarm-on {
+  animation: siren-flash 0.6s ease-in-out infinite;
+}
+
+/* ===== 5. MINI-ROVER ===== */
+.rover-bouncing {
+  animation: rover-bounce 0.4s ease-out;
+}
+
+.boop-bubble {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -100%);
+  background: #facc15;
+  color: #0f172a;
+  font-weight: 800;
+  font-size: clamp(12px, 1.1vw, 18px);
+  padding: 4px 10px;
+  border-radius: 12px;
+  border: 3px solid #000;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  pointer-events: none;
+  animation: boop-float 0.8s ease-out forwards;
+  z-index: 30;
+  white-space: nowrap;
+}
+
+/* ===== 6. MODO EVA: EXTERIOR PANELES SOLARES ===== */
+.eva-stage {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background-color: #000;
+  user-select: none;
+  font-family: var(--font-chakra), monospace;
+  box-sizing: border-box;
+  z-index: 40;
+}
+
+.eva-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  pointer-events: none;
+}
+
+/* Capa de polvo interactiva sobre los paneles solares */
+.solar-dust-clean-area {
+  position: absolute;
+  left: 17%;
+  top: 24%;
+  width: 82%;
+  height: 56%;
+  cursor: crosshair;
+  z-index: 45;
+}
+
+.eva-dust-mask {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(circle at center, rgba(234, 88, 12, 0.85) 0%, rgba(194, 65, 12, 0.7) 70%, transparent 100%);
+  transition: opacity 0.15s ease;
+}
+
+/* Botón de retorno por la escotilla exterior */
+.eva-airlock-hatch {
+  position: absolute;
+  left: 4.2%;
+  top: 42%;
+  width: 11%;
+  height: 44%;
+  cursor: pointer;
+  z-index: 48;
+  border-radius: 8px;
+}
+
+.eva-airlock-hatch:hover {
+  box-shadow: 0 0 0 3px #facc15, 0 0 25px rgba(250, 204, 21, 0.6);
+  background: rgba(250, 204, 21, 0.15);
+}
+
+/* HUD del Casco EVA */
+.eva-helmet-hud {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 47;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 24px 36px;
+}
+
+/* ===== 7. TABLET DESPLEGABLE CCTV ===== */
+.fnaf-cctv-tablet {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: min(94vw, 1160px);
+  height: 86vh;
+  transform: translateX(-50%) translateY(105%);
+  transition: transform 0.35s cubic-bezier(0.18, 0.89, 0.32, 1.1);
+  background: #0b1120;
+  border: 8px solid #1e293b;
+  border-bottom: none;
+  border-radius: 20px 20px 0 0;
+  box-shadow: 0 -10px 50px rgba(0, 0, 0, 0.95), inset 0 0 30px rgba(0, 0, 0, 0.8);
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.fnaf-cctv-tablet.open {
+  transform: translateX(-50%) translateY(0%);
+}
+
+.tablet-header {
+  background: #0f172a;
+  border-bottom: 3px solid #334155;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.tablet-screen-area {
+  flex: 1;
+  position: relative;
+  background: #000;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cctv-cam-feed-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}
+
+.tablet-controls-bar {
+  background: #0f172a;
+  border-top: 3px solid #334155;
+  padding: 12px 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.cam-selector-tabs {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.cam-tab-btn {
+  background: #1e293b;
+  color: #94a3b8;
+  border: 2px solid #334155;
+  border-radius: 6px;
+  padding: 8px 14px;
+  font-weight: 700;
+  font-size: clamp(11px, 0.9vw, 14px);
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.cam-tab-btn:hover {
+  background: #334155;
+  color: #fff;
+}
+
+.cam-tab-btn.active {
+  background: #0284c7;
+  color: #fff;
+  border-color: #38bdf8;
+  box-shadow: 0 0 14px #38bdf8;
+}
+
+.tablet-close-btn {
+  background: #334155;
+  color: #f87171;
+  border: 2px solid #ef4444;
+  border-radius: 6px;
+  padding: 8px 16px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.tablet-close-btn:hover {
+  background: #dc2626;
+  color: #fff;
+}
+
+/* Modales */
+.overlay-screen-wrap {
+  position: absolute;
+  inset: 0;
+  z-index: 100;
+  background: rgba(4, 7, 15, 0.88);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.overlay-modal-box {
+  background: #0f172a;
+  border: 4px solid #38bdf8;
+  border-radius: 16px;
+  padding: 28px;
+  max-width: 600px;
+  width: 100%;
+  box-shadow: 0 0 40px rgba(56, 189, 248, 0.35);
+  color: #f8fafc;
+  text-align: center;
+}

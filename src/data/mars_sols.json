@@ -1,0 +1,74 @@
+{
+  "_aviso": "Los campos historicalEvent son registros reales e historicos de NASA DONKI (api.nasa.gov). Los campos dustArrival, flareLevelUp y demas parametros de dificultad son reglas de diseño del juego, no datos ni pronosticos de la NASA.",
+  "sols": [
+    {
+      "sol": 1,
+      "label": "SOL 1",
+      "difficulty": "Entrenamiento",
+      "historicalEvent": {
+        "source": "NASA DONKI (api.nasa.gov/DONKI/CME)",
+        "activityID": "2024-05-08T05:36:00-CME-001",
+        "date": "2024-05-08T05:36Z",
+        "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/30589/-1",
+        "note": "Eyeccion de masa coronal real observada el 8 de mayo de 2024. Se usa como referencia historica, no como pronostico de esta partida."
+      },
+      "rules": {
+        "dustStart": 8,
+        "dustAtWindow": 30,
+        "dustHitAfter": 5,
+        "flareLevel1": 10,
+        "flareLevel2": 24,
+        "flareCritical": 40,
+        "flareFlashSeconds": 4,
+        "oxygenDrainPerSecond": 1.0,
+        "batteryIdleDrainPerSecond": 0.28
+      }
+    },
+    {
+      "sol": 2,
+      "label": "SOL 2",
+      "difficulty": "Intermedio",
+      "historicalEvent": {
+        "source": "NASA DONKI (api.nasa.gov/DONKI/CME)",
+        "activityID": "2023-02-24T02:00:00-CME-001",
+        "date": "2023-02-24T02:00Z",
+        "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/23900/-1",
+        "note": "Eyeccion de masa coronal real observada el 24 de febrero de 2023."
+      },
+      "rules": {
+        "dustStart": 6,
+        "dustAtWindow": 24,
+        "dustHitAfter": 4,
+        "flareLevel1": 8,
+        "flareLevel2": 18,
+        "flareCritical": 32,
+        "flareFlashSeconds": 3.5,
+        "oxygenDrainPerSecond": 1.2,
+        "batteryIdleDrainPerSecond": 0.32
+      }
+    },
+    {
+      "sol": 3,
+      "label": "SOL 3",
+      "difficulty": "Avanzado",
+      "historicalEvent": {
+        "source": "NASA DONKI (api.nasa.gov/DONKI/CME)",
+        "activityID": "2022-03-28T00:36:00-CME-001",
+        "date": "2022-03-28T00:36Z",
+        "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/19567/-1",
+        "note": "Eyeccion de masa coronal real observada el 28 de marzo de 2022."
+      },
+      "rules": {
+        "dustStart": 4,
+        "dustAtWindow": 18,
+        "dustHitAfter": 3.5,
+        "flareLevel1": 6,
+        "flareLevel2": 14,
+        "flareCritical": 26,
+        "flareFlashSeconds": 3,
+        "oxygenDrainPerSecond": 1.4,
+        "batteryIdleDrainPerSecond": 0.36
+      }
+    }
+  ]
+}

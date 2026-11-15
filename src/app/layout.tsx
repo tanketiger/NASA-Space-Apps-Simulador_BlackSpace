@@ -1,35 +1,38 @@
 import type { Metadata, Viewport } from "next";
-import { IBM_Plex_Mono, Space_Grotesk } from "next/font/google";
+import { Chakra_Petch, Fredoka } from "next/font/google";
 import "./globals.css";
 
-const space = Space_Grotesk({
+const fredoka = Fredoka({
   subsets: ["latin"],
-  variable: "--font-space",
+  weight: ["500", "600", "700"],
+  variable: "--font-fredoka",
   display: "swap",
 });
 
-const plex = IBM_Plex_Mono({
+const chakra = Chakra_Petch({
   subsets: ["latin"],
-  weight: ["400", "500", "600"],
-  variable: "--font-mono",
+  weight: ["500", "700"],
+  variable: "--font-chakra",
   display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "AURORA · Puesto Avanzado en Marte",
+  title: "Aurora Outpost · Tu primer turno en Marte",
   description:
-    "Simulador educativo donde repartes energía limitada entre sobrevivir, protegerte y hacer ciencia con datos reales de la NASA.",
+    "Juego de cabina para niños: sube el escudo a tiempo, vigila las cámaras y sobrevive hasta las 06:00 AM en el puesto avanzado de Marte.",
 };
 
 export const viewport: Viewport = {
-  themeColor: "#06080d",
+  themeColor: "#0F1B3D",
   width: "device-width",
   initialScale: 1,
+  maximumScale: 1,
+  viewportFit: "cover",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="es" className={`${space.variable} ${plex.variable}`}>
+    <html lang="es" className={`${fredoka.variable} ${chakra.variable}`}>
       <body>{children}</body>
     </html>
   );
