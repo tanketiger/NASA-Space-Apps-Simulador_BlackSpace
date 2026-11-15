@@ -33,12 +33,12 @@ export default function Onboarding({
           <br />
           <span className="text-dust">Una base.</span>
           <br />
-          Energia limitada.
+          Energía limitada.
         </h1>
 
         <p className="mt-5 max-w-[54ch] text-[15px] leading-relaxed text-muted">
-          Eres el control de mision de <span className="text-ink">AURORA</span>, un puesto avanzado en
-          Marte. Cada sol tienes la misma energia y cuatro cosas que la necesitan: sobrevivir,
+          Eres el control de misión de <span className="text-ink">AURORA</span>, un puesto avanzado en
+          Marte. Cada sol tienes la misma energía y cuatro cosas que la necesitan: sobrevivir,
           protegerte, comunicarte y hacer ciencia.{" "}
           <span className="text-ink">Ninguna es gratis.</span>
         </p>
@@ -91,7 +91,7 @@ export default function Onboarding({
       )}
 
       <p className="mt-6 max-w-[70ch] text-[10px] leading-snug text-muted">
-        Las imagenes son fotos reales de misiones de la NASA. El cuerpo de la tripulacion es un modelo
+        Las imagenes son fotos reales de misiones de la NASA. El cuerpo de la tripulación es un modelo
         del juego, no un dato de la NASA. Cada dato lleva su etiqueta de procedencia.
       </p>
     </main>

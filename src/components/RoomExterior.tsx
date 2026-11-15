@@ -11,29 +11,34 @@ import type { GameState } from "@/lib/sim/types";
 function Panel({ dust }: { dust: number }) {
   return (
     <div className="relative aspect-[16/10] overflow-hidden rounded-lg border border-[#2a3346] bg-[#0b1220]">
+      <div className="absolute inset-0 bg-[linear-gradient(135deg,#1b2b45,#0d1727)]" />
       <div
-        className="absolute inset-0"
+        className="absolute inset-0 opacity-80"
         style={{
           backgroundImage:
-            "linear-gradient(90deg, rgba(95,208,200,0.22) 1px, transparent 1px), linear-gradient(0deg, rgba(95,208,200,0.22) 1px, transparent 1px)",
-          backgroundSize: "18px 18px",
+            "repeating-linear-gradient(90deg, rgba(120,200,255,0.22) 0 1px, transparent 1px 16px), repeating-linear-gradient(0deg, rgba(120,200,255,0.22) 0 1px, transparent 1px 16px)",
+        }}
+      />
+      <div
+        className="absolute inset-0"
+        style={{ background: "linear-gradient(120deg, rgba(255,255,255,0.16), transparent 46%)" }}
+      />
+      <div
+        className="absolute inset-0 transition-opacity duration-700"
+        style={{
+          opacity: 0.12 + dust * 0.75,
+          background:
+            "radial-gradient(120% 90% at 22% 8%, #c79a63 0%, #9c7448 45%, #6b4f33 100%)",
+          mixBlendMode: "soft-light",
         }}
       />
       <div
         className="absolute inset-0 transition-opacity duration-700"
         style={{
-          opacity: 0.15 + dust * 0.85,
-          background:
-            "radial-gradient(circle at 30% 30%, #b98a5a 0%, #8a6440 35%, #5e4530 70%, #3b2c20 100%)",
-          mixBlendMode: "multiply",
-        }}
-      />
-      <div
-        className="absolute inset-0 opacity-40"
-        style={{
+          opacity: dust * 0.5,
           backgroundImage:
-            "radial-gradient(circle at 20% 70%, rgba(0,0,0,0.5) 0 2px, transparent 3px), radial-gradient(circle at 70% 30%, rgba(0,0,0,0.4) 0 2px, transparent 3px)",
-          backgroundSize: "40px 40px, 60px 60px",
+            "radial-gradient(circle at 30% 40%, rgba(200,160,110,0.9) 0 3px, transparent 4px), radial-gradient(circle at 70% 65%, rgba(180,140,95,0.8) 0 2px, transparent 3px)",
+          backgroundSize: "26px 26px, 34px 34px",
         }}
       />
     </div>

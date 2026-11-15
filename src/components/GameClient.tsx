@@ -35,7 +35,16 @@ export default function GameClient() {
   } = useGame();
 
   const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
+  useEffect(() => {
+    setMounted(true);
+    // Atajo de demo: /?demo&room=exterior arranca directo en el escenario historico.
+    if (typeof window === "undefined") return;
+    const params = new URLSearchParams(window.location.search);
+    if (!params.has("demo")) return;
+    if (!game) start("tormenta");
+    const r = params.get("room");
+    if (r === "control" || r === "exterior" || r === "vitales") setRoom(r);
+  }, []);
 
   if (!mounted) {
     return (
@@ -65,7 +74,7 @@ export default function GameClient() {
         {SCENARIOS[game.scenario].badge === "empty" && (
           <div className="mb-4 rounded-xl border border-warn/40 bg-warn/10 px-4 py-2.5 text-[11px] text-warn">
             <strong className="font-semibold">Modo sin datos.</strong> Falta la NASA_API_KEY: los soles
-            estan vacios. Configura la key y ejecuta <code className="num">npm run snapshots</code> para
+            están vacios. Configura la key y ejecuta <code className="num">npm run snapshots</code> para
             jugar con el clima espacial real.
           </div>
         )}

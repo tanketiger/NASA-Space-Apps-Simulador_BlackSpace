@@ -25,7 +25,7 @@ export default function Martian({ onScare }: { onScare: () => void }) {
           </h3>
           <p className="mt-1 text-[11.5px] leading-snug text-muted">
             Te tiro tierra en el panel. No es ciencia: es un easter egg. Sal a espantarlo antes de que
-            ensucie mas.
+            ensucie más.
           </p>
           <button onClick={onScare} className="btn btn-primary mt-3 w-full">
             Salir a espantarlo

@@ -119,7 +119,7 @@ export default function RoomControl({
                 <img
                   src={src}
                   alt={`Vista real de Marte desde la ventana ${i + 1}`}
-                  className="h-full w-full object-cover opacity-90 transition-transform duration-700 group-hover:scale-105"
+                  className="h-full w-full scale-110 object-cover opacity-90 transition-transform duration-700 group-hover:scale-[1.18]"
                   loading="lazy"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/20" />

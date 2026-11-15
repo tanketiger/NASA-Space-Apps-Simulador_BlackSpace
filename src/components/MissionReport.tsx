@@ -27,14 +27,14 @@ export default function MissionReport({
           <div>
             <span className="micro">Informe final</span>
             <h2 className="mt-1 text-2xl font-bold">
-              {survived ? "Mision completada" : "Mision terminada"}
+              {survived ? "Misión completada" : "Misión terminada"}
             </h2>
             <p className="mt-1 text-[12px] text-muted">
               {survived
-                ? "La tripulacion sobrevivio. Esta es la huella que dejo tu gestion."
+                ? "La tripulación sobrevivio. Esta es la huella que dejo tu gestion."
                 : game.failed === "o2"
-                  ? "El oxigeno llego a cero. La tripulacion tuvo que evacuar."
-                  : "La bateria se agoto y los sistemas criticos se apagaron."}
+                  ? "El oxígeno llego a cero. La tripulación tuvo que evacuar."
+                  : "La batería se agoto y los sistemas criticos se apagaron."}
             </p>
           </div>
           <button onClick={onClose} className="btn !p-2" aria-label="Cerrar">
@@ -60,7 +60,7 @@ export default function MissionReport({
 
         <div className="mt-4 rounded-xl border border-warn/30 bg-warn/[0.06] p-4">
           <div className="flex items-baseline justify-between">
-            <span className="micro">Si esta mision durara {C.projectionSols} soles</span>
+            <span className="micro">Si esta misión durara {C.projectionSols} soles</span>
             <span className="num text-xl text-warn">{projected.toFixed(0)} mSv</span>
           </div>
           <div className="mt-2 h-2 overflow-hidden rounded-full bg-[#141a25]">
@@ -73,15 +73,15 @@ export default function MissionReport({
             />
           </div>
           <p className="mt-2 text-[11px] leading-snug text-muted">
-            Eso seria el <span className="text-warn">{pct} %</span> del limite de carrera de {C.doseLimitMsv}{" "}
-            mSv. La radiacion no se siente y no se cura: solo se previene.
+            Eso seria el <span className="text-warn">{pct} %</span> del límite de carrera de {C.doseLimitMsv}{" "}
+            mSv. La radiación no se siente y no se cura: solo se previene.
           </p>
         </div>
 
         <div className="mt-4">
           <h3 className="micro">Estudios reales desbloqueados</h3>
           {game.studies.length === 0 ? (
-            <p className="mt-1 text-[11px] text-muted">Ninguno. La ciencia tambien cuesta energia.</p>
+            <p className="mt-1 text-[11px] text-muted">Ninguno. La ciencia también cuesta energía.</p>
           ) : (
             <ul className="mt-2 space-y-1">
               {game.studies.map((s) => (
@@ -100,7 +100,7 @@ export default function MissionReport({
           <SourceBadge kind="reference" text="MSL-RAD" />
           <SourceBadge kind="simulated" text="Cuerpo: modelo" />
           <button onClick={onRestart} className="btn btn-primary ml-auto">
-            <RotateCcw size={15} /> Nueva mision
+            <RotateCcw size={15} /> Nueva misión
           </button>
         </div>
       </div>

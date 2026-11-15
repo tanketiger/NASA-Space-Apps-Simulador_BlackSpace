@@ -29,14 +29,14 @@ const SOURCES = [
   },
   {
     name: "MSL/RAD (Hassler et al., 2014)",
-    kind: "Referencia cientifica",
-    use: "Tasa de dosis en superficie: 0,21 mGy/dia y 0,64 mSv/dia.",
+    kind: "Referencia científica",
+    use: "Tasa de dosis en superficie: 0,21 mGy/día y 0,64 mSv/día.",
     url: "https://science.nasa.gov/resource/radiation-measurements-on-mars/",
   },
   {
     name: "Mars Rover Power (NASA)",
     kind: "Referencia",
-    use: "Potencia del MMRTG (100 W) y contexto de energia solar en Marte.",
+    use: "Potencia del MMRTG (100 W) y contexto de energía solar en Marte.",
     url: "https://science.nasa.gov/resource/mars-rover-power/",
   },
 ];
@@ -51,7 +51,7 @@ export default function Creditos() {
       <h1 className="mt-6 text-3xl font-bold">Creditos y procedencia</h1>
       <p className="mt-2 text-[13px] leading-relaxed text-muted">
         AURORA es un proyecto educativo. El ambiente que simula viene de datos reales de la NASA;
-        el cuerpo de la tripulacion es un modelo del juego. Nada de lo que ves se presenta como un
+        el cuerpo de la tripulación es un modelo del juego. Nada de lo que ves se presenta como un
         dato que no sea.
       </p>
 
@@ -78,7 +78,7 @@ export default function Creditos() {
         </p>
         <p className="mt-2">
           <span className="text-ink">Codigo y textos:</span> se uso asistencia de IA para redactar
-          documentacion y para revisar el codigo. El motor de simulacion, sus constantes y sus fuentes
+          documentacion y para revisar el código. El motor de simulación, sus constantes y sus fuentes
           son verificables en <code className="num">docs/DATOS-VERIFICADOS.md</code>.
         </p>
         <p className="mt-2">
@@ -88,13 +88,13 @@ export default function Creditos() {
 
       <h2 className="mt-8 micro">Marcas</h2>
       <p className="mt-3 text-[12px] leading-relaxed text-muted">
-        Este proyecto no utiliza logos, banderas, parches ni identificadores de mision de la NASA.
+        Este proyecto no utiliza logos, banderas, parches ni identificadores de misión de la NASA.
         AURORA es una identidad propia. Los nombres de misiones y organismos se mencionan solo como
-        referencia cientifica.
+        referencia científica.
       </p>
 
       <p className="mt-8 text-[10px] text-muted">
-        Los datos historicos se etiquetan como historicos. Los datos en vivo se etiquetan como en vivo.
+        Los datos históricos se etiquetan como históricos. Los datos en vivo se etiquetan como en vivo.
       </p>
     </main>
   );
