@@ -76,18 +76,18 @@ export const OSDR_FALLBACK: OsdrStudy[] = [
     accession: "OSD-73",
     title:
       "Transcriptome Profiles in Normal Human Bronchial Epithelial Cells after Exposure to gamma-rays and different HZE particles",
-    url: "https://osdr.nasa.gov/bio/studies/OSD-73",
+    url: "https://osdr.nasa.gov/bio/repo/data/studies/OSD-73",
   },
   {
     accession: "OSD-489",
     title: "Rodent Research 1",
-    url: "https://osdr.nasa.gov/bio/studies/OSD-489",
+    url: "https://osdr.nasa.gov/bio/repo/data/studies/OSD-489",
   },
   {
     accession: "OSD-158",
     title:
       "Exposure to ionizing radiation induced persistent gene expression changes in mouse mammary gland",
-    url: "https://osdr.nasa.gov/bio/studies/OSD-158",
+    url: "https://osdr.nasa.gov/bio/repo/data/studies/OSD-158",
   },
 ];
 

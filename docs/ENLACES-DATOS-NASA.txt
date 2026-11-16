@@ -1,0 +1,58 @@
+NASA DATA AND RESOURCES ACTUALLY USED BY THE APPLICATION
+(verified, all returning 200)
+
+1  NASA DONKI - CME API (space weather)
+   https://api.nasa.gov/DONKI/CME?startDate=2024-05-01&endDate=2024-05-15&api_key=DEMO_KEY
+
+2  NASA Open APIs - home
+   https://api.nasa.gov/
+
+3  NASA OSDR - study search API
+   https://osdr.nasa.gov/osdr/data/search?term=radiation&size=6
+
+4  NASA OSDR - study OSD-73
+   https://osdr.nasa.gov/bio/repo/data/studies/OSD-73
+
+5  NASA OSDR - study OSD-489
+   https://osdr.nasa.gov/bio/repo/data/studies/OSD-489
+
+6  NASA OSDR - study OSD-158
+   https://osdr.nasa.gov/bio/repo/data/studies/OSD-158
+
+7  NASA Mars Trek - orbital tile
+   https://trek.nasa.gov/tiles/Mars/EQ/Mars_Viking_MDIM21_ClrMosaic_global_232m/1.0.0/default/default028mm/2/1/1.jpg
+
+8  NASA DONKI CCMC - SOL 1 record
+   https://ccmc.gsfc.nasa.gov/DONKI/events/30589/2/
+
+9  NASA DONKI CCMC - SOL 2 record
+   https://ccmc.gsfc.nasa.gov/DONKI/events/23900/2/
+
+10 NASA DONKI CCMC - SOL 3 record
+   https://ccmc.gsfc.nasa.gov/DONKI/events/19567/1/
+
+
+URLS ONLY (copy-paste)
+======================
+https://api.nasa.gov/DONKI/CME?startDate=2024-05-01&endDate=2024-05-15&api_key=DEMO_KEY
+https://api.nasa.gov/
+https://osdr.nasa.gov/osdr/data/search?term=radiation&size=6
+https://osdr.nasa.gov/bio/repo/data/studies/OSD-73
+https://osdr.nasa.gov/bio/repo/data/studies/OSD-489
+https://osdr.nasa.gov/bio/repo/data/studies/OSD-158
+https://trek.nasa.gov/tiles/Mars/EQ/Mars_Viking_MDIM21_ClrMosaic_global_232m/1.0.0/default/default028mm/2/1/1.jpg
+https://ccmc.gsfc.nasa.gov/DONKI/events/30589/2/
+https://ccmc.gsfc.nasa.gov/DONKI/events/23900/2/
+https://ccmc.gsfc.nasa.gov/DONKI/events/19567/1/
+
+
+NOT USED (documentation only - do not submit as API resources)
+==============================================================
+https://ccmc.gsfc.nasa.gov/tools/DONKI/
+https://osdr.nasa.gov/bio/
+https://trek.nasa.gov/mars/
+https://science.nasa.gov/resource/mars-rover-power/
+https://science.nasa.gov/mars/facts/
+https://science.nasa.gov/mission/msl-curiosity/
+https://osdr.nasa.gov/bio/studies/OSD-73        (404 - wrong path)
+https://visualization.osdr.nasa.gov/radlab/gui/data-api/   (500)

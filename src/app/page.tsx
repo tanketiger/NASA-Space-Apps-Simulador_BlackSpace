@@ -857,7 +857,7 @@ export default function Page() {
                       rel="noreferrer"
                       className="mt-1 inline-block text-[10px] text-cyan-300 underline"
                     >
-                      osdr.nasa.gov/bio/studies/{study.accession}
+                      osdr.nasa.gov/bio/repo/data/studies/{study.accession}
                     </a>
                   </div>
                 </>

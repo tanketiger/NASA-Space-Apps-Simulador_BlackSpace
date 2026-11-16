@@ -116,7 +116,7 @@ async function getOsdr(): Promise<NasaFeed["osdr"]> {
         // NOTE: in OSDR "Project Title" can be an empty string, so we use ||
         // (not ??) to fall back to the study's real "Study Title".
         const title = String(src["Project Title"] || src["Study Title"] || "");
-        return { accession, title, url: `https://osdr.nasa.gov/bio/studies/${accession}` };
+        return { accession, title, url: `https://osdr.nasa.gov/bio/repo/data/studies/${accession}` };
       })
       .filter((s) => /^OSD-\d+/.test(s.accession) && s.title.length > 0);
     if (studies.length > 0) {

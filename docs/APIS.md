@@ -69,7 +69,9 @@ Its search API is open:
 GET https://osdr.nasa.gov/osdr/data/search?term=radiation&size=6
 ```
 
-It returns real studies with accessions such as `OSD-73`, `OSD-489` and `OSD-158`.
+It returns real studies with accessions such as `OSD-73`, `OSD-489` and `OSD-158`. Their public
+page is `https://osdr.nasa.gov/bio/repo/data/studies/<ACCESSION>` (note the `/bio/repo/data/`
+prefix: `/bio/studies/<ACCESSION>` returns 404).
 
 **Note:** OSDR blocks CORS, so the query is made from the server. It also returns non-`OSD-`
 records (for example metagenome accessions), so the handler filters to `/^OSD-\d+/`.
